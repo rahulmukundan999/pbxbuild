@@ -11,6 +11,7 @@
   "author": "rahul",
   "license": "ISC",
   "dependencies": {
+    "@angular/cli": "^6.2.5",
     "angular-material-fileupload": "^1.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
