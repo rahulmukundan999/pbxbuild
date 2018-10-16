@@ -12,7 +12,7 @@ var cookieParser = require('cookie-parser');
 
 
 var app = express();
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/contactlist');
+mongoose.connect('mongodb://rahul:rahul1234@ds043987.mlab.com:43987/contactlist1');
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
