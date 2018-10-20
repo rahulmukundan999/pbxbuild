@@ -227,7 +227,7 @@ router.get('/api/extensions',(req,res,next)=>{
       console.log(extensions);
         for(var i=0; i<extensions.length; i++){
             
-            var a='/usr/local/freeswitch/conf/directory/default/'+extensions[i].extensionno+'.xml';
+            var a=extensions[i].extensionno+'.xml';
             
        var b=i;
             fs.exists(a,function (exists) {
