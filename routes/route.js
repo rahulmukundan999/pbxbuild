@@ -69,6 +69,8 @@ router.get("/api/confirmation/:token/:check", function(req, res) {
             if (err) {
             return res.status(500).send(err);
             }
+            alert('Mail Verified Successfully');
+            window.location = "http://35.200.187.12:3000/#/login";
             return res.json({msg:'updated'})
         });
         }
