@@ -3,17 +3,12 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-import { ExtensionComponent,ExtensionDialog } from './views/extension/extension.component';
-import { AuthService } from './views/login/auth.service';
-import { AuthGuard } from './views/login/auth.guard';
-import { AuthService1 } from './views/login/auth.service1';
-import { AuthGuard1 } from './views/login/auth.guard1';
 import { FormBuilder, Validators, FormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { RingComponent,RingDialog } from './views/ring/ring.component';
-import { AccountComponent,DialogOverviewExampleDialog } from './views/account/account.component';
+//import { AccountComponent,DialogOverviewExampleDialog } from './views/account/account.component';
 import { InboundComponent,InboundDialog } from './views/inbound/inbound.component';
 import { TrunkComponent,TrunkDialog } from './views/trunk/trunk.component';
 import {
@@ -68,7 +63,6 @@ import { DefaultLayoutComponent,DefaultLayout1Component } from './containers';
 
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
-import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { OutboundComponent,OutboundDialog } from './views/outbound/outbound.component';
 import { ReceptionistComponent,ReceptionistDialog,WavDialog } from './views/receptionist/receptionist.component';
@@ -141,12 +135,13 @@ import{UserModule} from './views/user/user.module';
     BrowserAnimationsModule,
     FormsModule,
     MatFormFieldModule
-  ],entryComponents: [TrunkComponent,TrunkDialog,RingComponent,RingDialog,ReceptionistComponent,ReceptionistDialog,WavDialog,OutboundComponent,OutboundDialog,InboundComponent,InboundDialog,ExtensionComponent, ExtensionDialog,AccountComponent,DialogOverviewExampleDialog],
+    
+  ],entryComponents: [TrunkComponent,TrunkDialog,RingComponent,RingDialog,ReceptionistComponent,ReceptionistDialog,WavDialog,OutboundComponent,OutboundDialog,InboundComponent,InboundDialog],
   imports: [
+    AppRoutingModule,
     HttpClientModule,
     HttpModule,
     BrowserModule,
-    AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
     AppFooterModule,
@@ -194,19 +189,15 @@ import{UserModule} from './views/user/user.module';
     BrowserAnimationsModule,
     FormsModule,
     UserModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    AppRoutingModule
   ],
   declarations: [
     AppComponent,
     ...APP_CONTAINERS,
     P404Component,
     P500Component,
-    LoginComponent,
     RegisterComponent,
-    ExtensionComponent,
-    ExtensionDialog,
-    AccountComponent,
-    DialogOverviewExampleDialog,
     InboundComponent,
     InboundDialog,
     OutboundComponent,OutboundDialog,
@@ -219,9 +210,7 @@ import{UserModule} from './views/user/user.module';
     useClass: HashLocationStrategy
   
   },FormBuilder,
-  AuthService,
-    AuthGuard, AuthService1,
-    AuthGuard1],
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

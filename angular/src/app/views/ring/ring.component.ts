@@ -16,6 +16,11 @@ export class RingComponent implements OnInit {
 
   rings: Ring[];
   ring: Ring;
+  dataSource;
+  displayedColumns=['name','extension','timeout','action'];
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   
   constructor(public dialog: MatDialog,private ringService: RingService) { }
@@ -30,7 +35,7 @@ export class RingComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.ringService.getRings()
-      .subscribe(rings => this.rings = rings);
+      .subscribe(rings => this.dataSource = rings);
 
 
      
@@ -39,7 +44,7 @@ export class RingComponent implements OnInit {
   
   ngOnInit() {
     this.ringService.getRings()
-    .subscribe(rings => this.rings = rings);
+    .subscribe(rings => this.dataSource = rings);
 
 
   
@@ -49,7 +54,7 @@ export class RingComponent implements OnInit {
   {
     if(confirm("Are you sure"))
     {
-    var rings=this.rings;
+    var rings=this.dataSource;
     this.ringService.deleteRing(id).subscribe(data =>{
 
       if(data.n==1)
@@ -63,7 +68,7 @@ export class RingComponent implements OnInit {
         }
       }
       this.ringService.getRings()
-      .subscribe(rings => this.rings = rings);
+      .subscribe(rings => this.dataSource = rings);
     })
   }
 }

@@ -3,6 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort,MatTableDataSource} f
 import { InboundService } from './inbound.service';
 import { Inbound } from './inbound';
 import { Extension } from '../extension/extension';
+import { AuthService } from '../login/auth.service';
+
 
 @Component({
   selector: 'app-inbound',
@@ -14,9 +16,10 @@ export class InboundComponent implements OnInit {
 
   inbounds: Inbound[];
   inbound: Inbound;
+  userid: any;
   displayedColumns=['name','didnumber','playback','ringgroup','forext','formob','action'];
 
-  constructor(public dialog: MatDialog,private inboundService: InboundService) { }
+  constructor(public dialog: MatDialog,private inboundService: InboundService, private auth:AuthService) { }
   openDialog(): void {
     const dialogRef = this.dialog.open(InboundDialog, {
       disableClose: false,
@@ -26,7 +29,7 @@ export class InboundComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.inboundService.getInbounds()
+      this.inboundService.getInbounds(this.userid)
       .subscribe(inbounds => this.inbounds = inbounds);
 
 
@@ -35,7 +38,8 @@ export class InboundComponent implements OnInit {
   } 
   
   ngOnInit() {
-    this.inboundService.getInbounds()
+    this.userid = this.auth.getId();
+    this.inboundService.getInbounds(this.userid)
     .subscribe(inbounds => this.inbounds = inbounds);
  }
       deleteInbound(id:any)
@@ -55,7 +59,7 @@ export class InboundComponent implements OnInit {
           }
         }
       }
-      this.inboundService.getInbounds()
+      this.inboundService.getInbounds(this.userid)
       .subscribe(inbounds => this.inbounds = inbounds);
     })
   }
@@ -86,6 +90,7 @@ extension:Extension;
       disable=false;
       disable1=false;
       disable2=false;
+      userid: string;
       textAreaEmpty()
       {
 if(this.ringgroup!='')
@@ -130,7 +135,8 @@ if(this.formob!='')
       
     
       constructor( public dialogRef: MatDialogRef<InboundDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData,private inboundService: InboundService) {}
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,private inboundService: InboundService,
+      private auth:AuthService) {}
         
     
       onNoClick(): void {
@@ -146,12 +152,13 @@ if(this.formob!='')
         playback: this.playback,
         ringgroup:this.ringgroup,
         forext:this.forext,
-        formob:this.formob
+        formob:this.formob,
+        userid: this.userid
   }
   this.inboundService.addInbound(newInbound)
   .subscribe(inbound=>{
  this.inbounds.push(inbound);
- this.inboundService.getInbounds()
+ this.inboundService.getInbounds(this.userid)
 .subscribe(inbounds => this.inbounds = inbounds);
   });
   this.dialogRef.close();
@@ -161,10 +168,10 @@ if(this.formob!='')
 
     
 ngOnInit() {
-
-  this.inboundService.getInbounds()
+this.userid = this.auth.getId();
+  this.inboundService.getInbounds(this.userid)
   .subscribe(inbounds => this.inbounds = inbounds);
-  this.inboundService.getExtensions()
+  this.inboundService.getExtensions(this.userid)
   .subscribe(extensions => this.extensions = extensions);
 
 

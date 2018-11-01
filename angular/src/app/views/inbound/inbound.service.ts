@@ -3,6 +3,8 @@ import { Http, Headers,HttpModule} from '@angular/http';
 import { Inbound } from './inbound';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
+
 
 @Injectable()
 
@@ -12,14 +14,24 @@ export class InboundService {
 
 //retrieve
 
-getInbounds()
+getInbounds(userid)
 {
-  return this.http.get('/api/inbounds').pipe(
+  var params = new HttpParams();
+  console.log(userid);
+  var user = {
+    userid: userid
+  }
+  return this.http.get('/api/inbounds',{params:user}).pipe(
   map(res => res.json()));
 }
-getExtensions()
+getExtensions(userid)
 {
-  return this.http.get('/api/extensions').pipe(
+  var params = new HttpParams();
+  console.log(userid);
+  var user = {
+    userid: userid
+  }
+  return this.http.get('/api/extensions',{params:user}).pipe(
   map(res => res.json()));
 }
 addInbound(newInbound)

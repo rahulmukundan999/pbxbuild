@@ -1,7 +1,9 @@
 <div class="class1">
-<h1 align="Center">cwcwec</h1>
-<button mat-raised-button (click)="openDialog()">Add</button>
-
+  <div class="class2">
+    <mat-card>
+<mat-card-title><button mat-raised-button color="primary" (click)="openDialog()">Add</button>
+</mat-card-title>
+<!--
 <table>
         <tr>
            <th>Trunk Name</th>
@@ -20,4 +22,41 @@
          <td><input type="submit" value="Delete"  (click)="deleteTrunk(trunk._id)"></td>
        </tr>
      </table>
+    -->
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Extensions">
+  
+      </mat-form-field>
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="trunkname">
+  <mat-header-cell  *matHeaderCellDef>Trunk Name</mat-header-cell>
+  <mat-cell *matCellDef="let user">{{user.trunkname}}</mat-cell>
+  </ng-container>  
+  <ng-container matColumnDef="username">
+  <mat-header-cell *matHeaderCellDef>username</mat-header-cell>
+  <mat-cell *matCellDef="let user">{{user.username1}}</mat-cell>
+  </ng-container>  
+   <ng-container matColumnDef="password">
+  <mat-header-cell *matHeaderCellDef>Password</mat-header-cell>
+  <mat-cell *matCellDef="let user">{{user.password}}</mat-cell>
+  </ng-container> 
+  <ng-container matColumnDef="trunkip">
+ <mat-header-cell *matHeaderCellDef>Trunkip</mat-header-cell>
+  <mat-cell *matCellDef="let user">{{user.trunkip}}</mat-cell>
+  </ng-container> 
+  <ng-container matColumnDef="register">
+  <mat-header-cell *matHeaderCellDef>Register</mat-header-cell>
+  <mat-cell *matCellDef="let user">{{user.register}}</mat-cell>
+  </ng-container> 
+  <ng-container matColumnDef="action">
+  <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+  <mat-cell *matCellDef="let user"><input type="submit" value="Delete"  (click)="deleteTrunk(user._id)"></mat-cell>
+  </ng-container>    
+  <mat-header-row *matHeaderRowDef="displayedColumns" color="primary"></mat-header-row>
+  <mat-row *matRowDef="let row; columns:displayedColumns"></mat-row>
+  </mat-table>
+  
+  </mat-card>
+
+</div>
 </div>

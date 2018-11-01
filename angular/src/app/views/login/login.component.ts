@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { RouterModule, Routes,Router } from '@angular/router';
 
 import { FormBuilder, Validators } from '@angular/forms';
@@ -10,10 +10,10 @@ import { LoginService } from './login.service';
   selector: 'app-dashboard',
   templateUrl: 'login.component.html'
 })
-export class LoginComponent { 
+export class LoginComponent implements OnInit { 
 
   username:any;
-  password:any;
+   password:any;
 
 
   form;
@@ -27,7 +27,14 @@ export class LoginComponent {
       password:this.password
     });
   }
+ngOnInit() {
 
+if(this.auth.isLoggednIn()) {
+  this.myRoute.navigate(['extension']);
+}
+
+
+}
 check()
 {
   /*
@@ -47,8 +54,13 @@ check()
  }
  console.log(login);
  this.loginservice.login(login).subscribe(user =>{
+  // console.log(user);
    if(!user) {
      console.log('invalid');
+     alert('No user');
+   } else if(user.active === false) {
+    console.log("verify email");
+      alert("verify email");
    }
    else {
      console.log(user);

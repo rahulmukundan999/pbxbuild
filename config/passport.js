@@ -29,7 +29,7 @@ module.exports = function(passport) {
 
            // if no user is found, return the message
            if (!user) {console.log('fwef1');
-               return done(null, false);
+               return done(null,null);
         }
 
            // if the user is found but the password is wrong

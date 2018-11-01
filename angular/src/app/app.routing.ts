@@ -6,19 +6,61 @@ import { DefaultLayoutComponent } from './containers';
 import { DefaultLayout1Component } from './containers';
 import { AuthGuard } from './views/login/auth.guard';
 import { AuthGuard1 } from './views/login/auth.guard1';
+import { AuthService } from './views/login/auth.service';
+import { AuthService1 } from './views/login/auth.service1';
 import {UserComponent} from './views/user/user.component'
-
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
-import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
-import { ExtensionComponent } from './views/extension/extension.component';
+//import { ExtensionComponent } from './views/extension/extension.component';
 import { AccountComponent } from './views/account/account.component';
 import { InboundComponent } from './views/inbound/inbound.component';
 import { OutboundComponent } from './views/outbound/outbound.component';
 import { ReceptionistComponent } from './views/receptionist/receptionist.component';
 import { RingComponent,RingDialog } from './views/ring/ring.component';
 import { TrunkComponent } from './views/trunk/trunk.component';
+//import { ExtensionModule} from './views/extension/extension.module';
+import {
+  MatFormFieldModule,
+ MatAutocompleteModule,
+  MatBadgeModule,
+  MatBottomSheetModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatTreeModule,
+  
+} from '@angular/material';
+import { ExtensionComponent } from './views/extension/extension.component';
+
 
 
 export const routes: Routes = [
@@ -43,8 +85,8 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
-    data: {
+    loadChildren: './views/login/login.module#LoginModule', 
+       data: {
       title: 'Login Page'
     }
   },
@@ -63,47 +105,19 @@ export const routes: Routes = [
       title: 'Home'
     },
     children: [
-      {
-        path: 'base',
-        loadChildren: './views/base/base.module#BaseModule'
-      },
-      {
-        path: 'buttons',
-        loadChildren: './views/buttons/buttons.module#ButtonsModule'
-      },
-      {
-        path: 'charts',
-        loadChildren: './views/chartjs/chartjs.module#ChartJSModule'
-      },
+      
       {
         path: 'dashboard',
         loadChildren: './views/dashboard/dashboard.module#DashboardModule'
       },
       {
-        path: 'icons',
-        loadChildren: './views/icons/icons.module#IconsModule'
-      },
-      {
-        path: 'notifications',
-        loadChildren: './views/notifications/notifications.module#NotificationsModule'
-      },
-      {
-        path: 'theme',
-        loadChildren: './views/theme/theme.module#ThemeModule'
-      },
-      {
-        path: 'widgets',
-        loadChildren: './views/widgets/widgets.module#WidgetsModule'
-      },
-      {
         path: 'extension',
-        component:ExtensionComponent
+        loadChildren: './views/extension/extension.module#ExtensionModule'
 
       },
       {
         path: 'account',
-        component:AccountComponent
-
+        loadChildren: './views/account/account.module#AccountModule'
       },
       {
         path: 'inbound',
@@ -146,7 +160,85 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [
+    RouterModule.forRoot(routes),  
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatTreeModule,
+   ],
+  exports: [ 
+    RouterModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatTreeModule, 
+  ],
+  providers: [
+    AuthService,
+      AuthGuard, AuthService1,
+      AuthGuard1]
 })
 export class AppRoutingModule {}

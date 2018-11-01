@@ -6,4 +6,5 @@ export class Inbound{
     ringgroup: string;
     forext: string;
     formob: string;
+    userid: string;
 }

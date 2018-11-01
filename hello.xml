@@ -6,6 +6,21 @@
     <variables>
       <variable name="default_gateway" value="$${defult_provider}"/>
     </variables>
-    <groups/>
+    <groups>
+      <group name="1">
+        <users>
+          <X-PRE-PROCESS cmd="include" data="default/*.xml"/>
+          <action application="set" data="call_timeout=1"/>
+          <user id="1" type="pointer"/>
+        </users>
+      </group>
+      <group name="2">
+        <users>
+          <X-PRE-PROCESS cmd="include" data="default/*.xml"/>
+          <action application="set" data="call_timeout=2"/>
+          <user id="2" type="pointer"/>
+        </users>
+      </group>
+    </groups>
   </domain>
 </include>

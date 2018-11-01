@@ -142,5 +142,4 @@ ngOnInit() {
   this.extensionService.getExtensions(this.userid)
   .subscribe(extensions => this.extensions = extensions);
     }
-
-    }
+ }

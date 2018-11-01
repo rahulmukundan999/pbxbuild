@@ -16,12 +16,18 @@ export class TrunkComponent implements OnInit {
   trunks: Trunk[];
   trunk: Trunk;
 
+  dataSource;
+  displayedColumns=['trunkname','username','password','trunkip','register','action'];
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 
   constructor(public dialog: MatDialog,private trunkService: TrunkService) { }
   ngOnInit() {
 
     this.trunkService.getTrunks()
-      .subscribe(trunks => this.trunks = trunks);
+      .subscribe(trunks => this.dataSource = trunks);
    
   }
      openDialog(): void {
@@ -34,7 +40,7 @@ export class TrunkComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.trunkService.getTrunks()
-      .subscribe(trunks => this.trunks = trunks);
+      .subscribe(trunks => this.dataSource = trunks);
 
 
      
@@ -44,7 +50,7 @@ export class TrunkComponent implements OnInit {
   {
     if(confirm("Are you sure"))
     {
-    var trunks=this.trunks;
+    var trunks=this.dataSource;
     this.trunkService.deleteTrunk(id).subscribe(data =>{
 
       if(data.n==1)
@@ -58,7 +64,7 @@ export class TrunkComponent implements OnInit {
         }
       }
       this.trunkService.getTrunks()
-      .subscribe(trunks => this.trunks = trunks);
+      .subscribe(trunks => this.dataSource = trunks);
     })
   }
 }

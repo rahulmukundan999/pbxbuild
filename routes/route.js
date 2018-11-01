@@ -15,7 +15,6 @@ var fs = require('fs');
 var multer = require('multer');
 var User = require('./models/user');
 
-
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, 'routes/uploads')
@@ -31,8 +30,11 @@ module.exports = function(router, passport) {
 
 // login post
 router.post('/api/login', passport.authenticate('local-login'), function(req, res) {
-    console.log(req.user);
-    res.json(req.user);
+    if(req.user) {
+        res.json(req.user);
+    } else {
+        res.json(null);
+    }
   });
     // loggedin
  router.get("/api/loggedin", function(req, res) {
@@ -162,7 +164,7 @@ router.get('/api/rings',(req,res,next)=>{
 
 //retrive outbound
 router.get('/api/outbounds',(req,res,next)=>{
-    Outbound.find(function(err,outbounds){
+    Outbound.find({userid:req.query.userid},function(err,outbounds){
 
 
         var xml= builder.create('include');
@@ -327,7 +329,7 @@ router.get('/api/trunks',(req,res,next)=>{
 
     //retrive inbound
 router.get('/api/inbounds',(req,res,next)=>{
-    Inbound.find(function(err,inbounds){
+    Inbound.find({userid:req.query.userid},function(err,inbounds){
         res.json(inbounds);
     }) 
     });
@@ -451,10 +453,23 @@ router.post('/api/outbound',(req,res,next)=>{
 });
 
 // Add User
+
+
 router.post('/api/user',(req,res,next)=>{
+
+    var usercheck = req.body.name;
+console.log(usercheck);
+    User.findOne({username:usercheck},function(err,user){
+            if(user) {
+        res.json(500);
+        console.log('found',user);
+            } else {
+    console.log('not',user);
     var newUser = new User();
     var newUser = new User({
         username: req.body.name.toLowerCase(),
+        email: req.body.email,
+        phone: req.body.phone,
         password: newUser.generateHash(req.body.password)
     })
     
@@ -468,6 +483,8 @@ router.post('/api/user',(req,res,next)=>{
             res.json(100);
           });
     })
+}
+    });
 });
 
 
@@ -566,7 +583,8 @@ router.post('/api/inbound',(req,res,next)=>{
         playback: req.body.playback,
         ringgroup: req.body.ringgroup,
         forext: req.body.forext,
-        formob: req.body.formob
+        formob: req.body.formob,
+        userid:req.body.userid
     })
     
 

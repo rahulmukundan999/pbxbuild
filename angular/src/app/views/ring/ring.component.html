@@ -1,11 +1,12 @@
 
   <div class="class1">
-      <h1 align="center"><strong>RingGroup</strong></h1>
-      <h2 align="center">
-      <button mat-raised-button (click)="openDialog()">Add</button>
-      </h2>
+    <div class="class2">
+    <mat-card>
+      <mat-card-title><button mat-raised-button color="primary" (click)="openDialog()">Add</button>
+      </mat-card-title>
+      
 
-
+<!--
       <table>
         <tr>
            <th>name</th>
@@ -20,5 +21,32 @@
          <td><input type="submit" value="Delete"  (click)="deleteRing(ring._id)"></td>
        </tr>
      </table>
+    -->
+     <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Extensions">
 
+    </mat-form-field>
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<ng-container matColumnDef="name">
+<mat-header-cell  *matHeaderCellDef>Name</mat-header-cell>
+<mat-cell *matCellDef="let user">{{user.name}}</mat-cell>
+</ng-container>  
+<ng-container matColumnDef="extension">
+<mat-header-cell *matHeaderCellDef>Extension</mat-header-cell>
+<mat-cell *matCellDef="let user">{{user.extension}}</mat-cell>
+</ng-container>  
+<ng-container matColumnDef="timeout">
+<mat-header-cell *matHeaderCellDef>Timeout</mat-header-cell>
+<mat-cell *matCellDef="let user">{{user.timeout}}</mat-cell>
+</ng-container>  
+<ng-container matColumnDef="action">
+<mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+<mat-cell *matCellDef="let user"><input type="submit" value="Delete"  (click)="deleteRing(user._id)"></mat-cell>
+</ng-container>    
+<mat-header-row *matHeaderRowDef="displayedColumns" color="primary"></mat-header-row>
+<mat-row *matRowDef="let row; columns:displayedColumns"></mat-row>
+</mat-table>
+
+</mat-card>
+</div>
         </div>
