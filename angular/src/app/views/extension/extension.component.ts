@@ -53,7 +53,10 @@ export class ExtensionComponent implements OnInit {
     this.userid = this.auth.getId();
     console.log(this.userid);
     this.extensionService.getExtensions(this.userid)
-    .subscribe(extensions => this.extensions = extensions);
+    .subscribe(extensions => {
+      this.extensions = extensions;
+      console.log(extensions);
+    });
 
     this.extensionService.getExtensions(this.userid)
     .subscribe(extensions =>  this.dataSource=new MatTableDataSource(extensions));

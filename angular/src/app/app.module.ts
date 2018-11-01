@@ -60,9 +60,6 @@ import { AppComponent } from './app.component';
 
 // Import containers
 import { DefaultLayoutComponent,DefaultLayout1Component } from './containers';
-
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
 import { RegisterComponent } from './views/register/register.component';
 import { OutboundComponent,OutboundDialog } from './views/outbound/outbound.component';
 import { ReceptionistComponent,ReceptionistDialog,WavDialog } from './views/receptionist/receptionist.component';
@@ -195,8 +192,6 @@ import{UserModule} from './views/user/user.module';
   declarations: [
     AppComponent,
     ...APP_CONTAINERS,
-    P404Component,
-    P500Component,
     RegisterComponent,
     InboundComponent,
     InboundDialog,

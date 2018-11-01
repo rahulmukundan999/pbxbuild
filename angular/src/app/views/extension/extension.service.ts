@@ -4,23 +4,27 @@ import { Extension } from './extension';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import {AuthService} from '../login/auth.service';
 
 @Injectable()
 
 export class ExtensionService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,private auth:AuthService) { }
 
 //retrieve
 
 getExtensions(userid)
 {
+  var headers = new Headers();
+  headers.append('authorization','Bearer'+' '+this.auth.getTokenid());
+  
   var params = new HttpParams();
   console.log(userid);
-  var user = {
-    userid: userid
-  }
-  return this.http.get('/api/extensions',{params:user}).pipe(
+  var user = userid;
+  console.log(typeof(user));
+  headers.append('user',user);
+  return this.http.get('/api/extensions',{headers:headers}).pipe(
   map(res => res.json()));
 }
 addExtension(newExtension)

@@ -9,8 +9,6 @@ import { AuthGuard1 } from './views/login/auth.guard1';
 import { AuthService } from './views/login/auth.service';
 import { AuthService1 } from './views/login/auth.service1';
 import {UserComponent} from './views/user/user.component'
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
 import { RegisterComponent } from './views/register/register.component';
 //import { ExtensionComponent } from './views/extension/extension.component';
 import { AccountComponent } from './views/account/account.component';
@@ -68,20 +66,6 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',
-  },
-  {
-    path: '404',
-    component: P404Component,
-    data: {
-      title: 'Page 404'
-    }
-  },
-  {
-    path: '500',
-    component: P500Component,
-    data: {
-      title: 'Page 500'
-    }
   },
   {
     path: 'login',

@@ -54,7 +54,7 @@ check()
  }
  console.log(login);
  this.loginservice.login(login).subscribe(user =>{
-  // console.log(user);
+  console.log(user);
    if(!user) {
      console.log('invalid');
      alert('No user');
@@ -64,8 +64,10 @@ check()
    }
    else {
      console.log(user);
-     this.auth.sendToken(user.username);
-     this.auth.sendId(user._id);
+     this.auth.sendToken(user.user.username);
+     this.auth.sendId(user.user._id);
+     this.auth.sendTokenid(user.token);
+     //console.log(this.auth.getTokenid());
      console.log(this.auth.getId());
      this.myRoute.navigate(['extension']);
    }

@@ -14,6 +14,12 @@ var builder = require('xmlbuilder');
 var fs = require('fs');
 var multer = require('multer');
 var User = require('./models/user');
+const jwt = require('jsonwebtoken');
+var a =  require('./verify/verifys.js');
+var verify = new a();
+var b = require('./verify/mail.js');
+var mail = new b();
+//console.log(b.check());
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -31,7 +37,14 @@ module.exports = function(router, passport) {
 // login post
 router.post('/api/login', passport.authenticate('local-login'), function(req, res) {
     if(req.user) {
-        res.json(req.user);
+      //  res.json(req.user);
+        jwt.sign({user:req.user},'secretkey',(err,token)=>{
+            res.json({
+                token:token,
+                user:req.user
+            });
+        });
+       
     } else {
         res.json(null);
     }
@@ -221,10 +234,17 @@ router.get('/api/outbounds',(req,res,next)=>{
 
 
 //Retrive extensions 
-router.get('/api/extensions',(req,res,next)=>{
+router.get('/api/extensions',verify.extension,(req,res,next)=>{
+    jwt.verify(req.token, 'secretkey',(err,authData)=>{
+if(err) {
+    res.sendStatus(403);
+} else {
     var xml = builder.create('include');
-    console.log(req.query.userid);
-    Extension.find({userid: req.query.userid}, function(err,extensions){
+   // console.log(req.query.userid);
+    console.log('1',req.headers['user']);
+   // var check = JSON.parse(req.headers['user']);
+   // console.log('check',check.userid);
+    Extension.find({userid: req.headers['user']}, function(err,extensions){
 
       console.log(extensions);
         for(var i=0; i<extensions.length; i++){
@@ -273,8 +293,11 @@ router.get('/api/extensions',(req,res,next)=>{
       
         res.json(extensions);
     });
+}
+});
     
 });
+
     
 
 
@@ -479,6 +502,7 @@ console.log(usercheck);
             if (err) {
               return next(err);
             }
+            mail.check(user);
             console.log(user);
             res.json(100);
           });

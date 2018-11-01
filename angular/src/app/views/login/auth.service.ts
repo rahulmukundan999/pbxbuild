@@ -15,6 +15,12 @@ export class AuthService {
   getId() {
     return localStorage.getItem("UserId")
   }
+  sendTokenid(token: string) {
+    localStorage.setItem("Token", token)
+  }
+  getTokenid() {
+    return localStorage.getItem("Token")
+  }
   isLoggednIn() {
     return this.getToken() !== null;
   }
