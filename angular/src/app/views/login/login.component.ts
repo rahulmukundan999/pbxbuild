@@ -58,11 +58,11 @@ check()
    if(!user) {
      console.log('invalid');
      alert('No user');
-   } else if(user.active === false) {
+   } else if(user.user.active === false) {
     console.log("verify email");
       alert("verify email");
    }
-   else {
+   else {console.log('fwf');
      console.log(user);
      this.auth.sendToken(user.user.username);
      this.auth.sendId(user.user._id);
