@@ -70,7 +70,7 @@ router.get("/api/confirmation/:token/:check", function(req, res) {
             return res.status(500).send(err);
             }
             //alert('Mail Verified Successfully');
-            return res.redirect('/login');
+            return res.redirect('/#/login');
 
         });
         }

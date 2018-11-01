@@ -55,7 +55,7 @@ check()
  console.log(login);
  this.loginservice.login(login).subscribe(user =>{
   console.log(user);
-   if(!user) {
+   if(!user.user) {
      console.log('invalid');
      alert('No user');
    } else if(user.user.active === false) {
