@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
-
+const jwt = require('jsonwebtoken');
+console.log('fwefwe');
 class mail {
     check(user) {
         console.log(user);
@@ -13,14 +14,14 @@ class mail {
             pass: 'rahul1234' // generated ethereal password
         }
     });
-
+    const url = 'http://35.200.187.12:3000/api/confirmation/'+user._id+'/check';
     // setup email data with unicode symbols
     let mailOptions = {
         from: 'Hirepbx', // sender address
         to: user.email, // list of receivers
         subject: 'Hello '+user.username, // Subject line
         text: 'Welcome to Hirepbx', // plain text body
-        html: '<b>Hello '+ user.username+'</b><br><p> Thanks for showing interset in us</p><br><p>Please verify the mail<p>' // html body
+        html: '<b>Hello '+ user.username+'</b><br><p> Thanks for showing interset in us</p><br><p>Please verify the mail '+ url + '<p>' // html body
     };
 
     // send mail with defined transport object
