@@ -4,22 +4,25 @@ import { Contact } from './contact';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import {AuthService} from '../login/auth.service';
 
 @Injectable()
 
 export class ContactService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,private auth:AuthService) { }
 
 //retrieve
 
 getContacts(userid)
 {
-  var params = new HttpParams();
-  var user = {
-    userid: userid
-  }
-  return this.http.get('/api/contacts', {params:user}).pipe(
+  var headers = new Headers();
+  headers.append('authorization','Bearer'+' '+this.auth.getTokenid());
+  console.log(userid);
+  var user = userid;
+  console.log(typeof(user));
+  headers.append('user',user);
+  return this.http.get('/api/contacts',{headers:headers}).pipe(
   map(res => res.json()));
 }
 addContact(newContact)

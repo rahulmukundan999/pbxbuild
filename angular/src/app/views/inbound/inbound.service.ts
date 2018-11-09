@@ -4,34 +4,37 @@ import { Inbound } from './inbound';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import {AuthService} from '../login/auth.service';
 
 
 @Injectable()
 
 export class InboundService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,private auth:AuthService) { }
 
 //retrieve
 
 getInbounds(userid)
 {
-  var params = new HttpParams();
+  var headers = new Headers();
+  headers.append('authorization','Bearer'+' '+this.auth.getTokenid());
   console.log(userid);
-  var user = {
-    userid: userid
-  }
-  return this.http.get('/api/inbounds',{params:user}).pipe(
+  var user = userid;
+  console.log(typeof(user));
+  headers.append('user',user);
+  return this.http.get('/api/inbounds',{headers:headers}).pipe(
   map(res => res.json()));
 }
 getExtensions(userid)
 {
-  var params = new HttpParams();
+  var headers = new Headers();
+  headers.append('authorization','Bearer'+' '+this.auth.getTokenid());
   console.log(userid);
-  var user = {
-    userid: userid
-  }
-  return this.http.get('/api/extensions',{params:user}).pipe(
+  var user = userid;
+  console.log(typeof(user));
+  headers.append('user',user);
+  return this.http.get('/api/extensions',{headers:headers}).pipe(
   map(res => res.json()));
 }
 addInbound(newInbound)

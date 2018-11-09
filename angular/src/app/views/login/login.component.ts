@@ -55,10 +55,10 @@ check()
  console.log(login);
  this.loginservice.login(login).subscribe(user =>{
   console.log(user);
-   if(!user.user) {
+   if(user.status === 500) {
      console.log('invalid');
      alert('No user');
-   } else if(user.user.active === false) {
+   } else if(user.status === 200 && user.user.active === false) {
     console.log("verify email");
       alert("verify email");
    }

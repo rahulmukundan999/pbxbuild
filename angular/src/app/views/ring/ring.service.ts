@@ -3,6 +3,7 @@ import { Http, Headers,HttpModule} from '@angular/http';
 import { Ring } from './ring';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import {AuthService} from '../login/auth.service';
 
 
 
@@ -12,10 +13,16 @@ import { Observable } from 'rxjs';
 
 export class RingService {
 
-  constructor(private http: Http) { }
-  getRings()
+  constructor(private http: Http, private auth:AuthService) { }
+  getRings(userid)
   {
-    return this.http.get('/api/rings').pipe(
+    var headers = new Headers();
+    headers.append('authorization','Bearer'+' '+this.auth.getTokenid());
+    console.log(userid);
+    var user = userid;
+    console.log(typeof(user));
+    headers.append('user',user);
+    return this.http.get('/api/rings',{headers:headers}).pipe(
     map(res => res.json()));
   }
   addRing(newRing)

@@ -37,7 +37,6 @@ module.exports = function(passport) {
             console.log('fwef2');
                return done(null, false); 
            }
-
            // all is well, return successful user
            return done(null, user);
 	    });

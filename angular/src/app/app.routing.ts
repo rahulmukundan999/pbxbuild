@@ -12,11 +12,11 @@ import {UserComponent} from './views/user/user.component'
 import { RegisterComponent } from './views/register/register.component';
 //import { ExtensionComponent } from './views/extension/extension.component';
 import { AccountComponent } from './views/account/account.component';
-import { InboundComponent } from './views/inbound/inbound.component';
-import { OutboundComponent } from './views/outbound/outbound.component';
+//import { InboundComponent } from './views/inbound/inbound.component';
+//import { OutboundComponent } from './views/outbound/outbound.component';
 import { ReceptionistComponent } from './views/receptionist/receptionist.component';
-import { RingComponent,RingDialog } from './views/ring/ring.component';
-import { TrunkComponent } from './views/trunk/trunk.component';
+//import { RingComponent,RingDialog } from './views/ring/ring.component';
+//import { TrunkComponent } from './views/trunk/trunk.component';
 //import { ExtensionModule} from './views/extension/extension.module';
 import {
   MatFormFieldModule,
@@ -57,7 +57,7 @@ import {
   MatTreeModule,
   
 } from '@angular/material';
-import { ExtensionComponent } from './views/extension/extension.component';
+//import { ExtensionComponent } from './views/extension/extension.component';
 
 
 
@@ -105,11 +105,11 @@ export const routes: Routes = [
       },
       {
         path: 'inbound',
-        component:InboundComponent
+        loadChildren: './views/inbound/inbound.module#InboundModule'
       },
       {
         path: 'outbound',
-        component:OutboundComponent
+        loadChildren: './views/outbound/outbound.module#OutboundModule'
       },
       {
         path: 'receptionist',
@@ -117,11 +117,11 @@ export const routes: Routes = [
       },
       {
         path: 'ring',
-        component: RingComponent
+        loadChildren: './views/ring/ring.module#RingModule'
       },
       {
         path: 'trunk',
-        component: TrunkComponent
+        loadChildren: './views/trunk/trunk.module#TrunkModule'
       }
     ]
   },

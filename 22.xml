@@ -1,0 +1,18 @@
+<include>
+  <user id="22">
+    <params>
+      <param name="password" value="22"/>
+      <param name="vm-password" value="22"/>
+    </params>
+    <variables>
+      <variable name="toll_allow" value="domestic,international,local"/>
+      <variable name="accountcode" value="22"/>
+      <variable name="user_context" value="default"/>
+      <variable name="effective_caller_id_name" value="Extension 22"/>
+      <variable name="effective_caller_id_number" value="22"/>
+      <variable name="outbound_caller_id_name" value="$${22}"/>
+      <variable name="outbound_caller_id_number" value="$${22}"/>
+      <variable name="callgroup" value="techsupport"/>
+    </variables>
+  </user>
+</include>

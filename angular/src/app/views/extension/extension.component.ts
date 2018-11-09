@@ -121,16 +121,16 @@ export interface DialogData {
       addExtension()
       {
       const newExtension={
-        userid: this.userid,
-    extensionno: this.extensionno,
-    displayname: this.displayname,
-    outboundcid: this.outboundcid,
-    password: this.password,
-    email: this.email
+      userid: this.userid,
+      extensionno: this.extensionno,
+      displayname: this.displayname,
+      outboundcid: this.outboundcid,
+      password: this.password,
+      email: this.email
   }
   this.extensionService.addExtension(newExtension)
   .subscribe(extension=>{
- this.extensions.push(extension);
+ alert(extension.msg);
  this.extensionService.getExtensions(this.userid)
 .subscribe(extensions => this.extensions = extensions);
   });

@@ -16,7 +16,7 @@
                 <input type="text" class="form-control" placeholder="Password" name="password" [(ngModel)]="password" required>
                 </div>
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="email" name="email" [(ngModel)]="email" required>
+                  <input type="text" class="form-control" pattern="^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$" placeholder="email" name="email" [(ngModel)]="email" required>
                   </div>
                   <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Phone" name="phone" [(ngModel)]="phone" required>

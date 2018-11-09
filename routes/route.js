@@ -35,19 +35,23 @@ const upload = multer({storage:storage});
 module.exports = function(router, passport) {  
 
 // login post
-router.post('/api/login', passport.authenticate('local-login'), function(req, res) {
+router.post('/api/login', passport.authenticate('local-login',{failureRedirect:'/api/fail'}), function(req, res) {
     if(req.user) {
       //  res.json(req.user);
         jwt.sign({user:req.user},'secretkey',(err,token)=>{
             res.json({
+                status:200,
                 token:token,
                 user:req.user
             });
         });
        
     } else {
-        res.json(null);
+        res.json({status:500});
     }
+  });
+  router.get("/api/fail", function(req, res) {
+    res.json({status:500});
   });
     // loggedin
  router.get("/api/loggedin", function(req, res) {
@@ -136,11 +140,16 @@ router.get('/api/receptionists',(req,res,next)=>{
 
 
     //retrive contacts
-router.get('/api/contacts',(req,res,next)=>{
-
-Contact.find({userid:req.query.userid},function(err,contacts){
+router.get('/api/contacts',verify.common,(req,res,next)=>{
+    jwt.verify(req.token, 'secretkey',(err,authData)=>{
+        if(err) {
+            res.sendStatus(403);
+        } else {
+Contact.find({userid: req.headers['user']},function(err,contacts){
     res.json(contacts);
-}) 
+});
+        } 
+    });
 });
 
 
@@ -154,8 +163,12 @@ router.get('/api/wavs',(req,res,next)=>{
 
 
 //retrive rings
-router.get('/api/rings',(req,res,next)=>{
-    Ring.find(function(err,rings){
+router.get('/api/rings',verify.common,(req,res,next)=>{
+    jwt.verify(req.token, 'secretkey',(err,authData)=>{
+        if(err) {
+            res.sendStatus(403);
+        } else {
+    Ring.find({userid: req.headers['user']},function(err,rings){
 
         var xml= builder.create('include');
         var domain=xml.ele('domain',{'name':'$${domain}'})
@@ -186,23 +199,21 @@ router.get('/api/rings',(req,res,next)=>{
 
         });
        res.json(rings);
-       
-       
-        
-
-
-
-
-
-    }) 
+    });
+    }
+    }); 
     });
     
 
 
 
 //retrive outbound
-router.get('/api/outbounds',(req,res,next)=>{
-    Outbound.find({userid:req.query.userid},function(err,outbounds){
+router.get('/api/outbounds',verify.outbound,(req,res,next)=>{
+    jwt.verify(req.token, 'secretkey',(err,authData)=>{
+        if(err) {
+            res.sendStatus(403);
+        } else {
+    Outbound.find({userid: req.headers['user']},function(err,outbounds){
 
 
         var xml= builder.create('include');
@@ -245,9 +256,10 @@ router.get('/api/outbounds',(req,res,next)=>{
         });
 
 
-
         res.json(outbounds);
-    }) 
+    });
+    }
+    }) ;
     });
     
     
@@ -328,12 +340,15 @@ if(err) {
 
 
 //retrive trunk
-router.get('/api/trunks',(req,res,next)=>{
+router.get('/api/trunks',verify.common,(req,res,next)=>{
 
     
+    jwt.verify(req.token, 'secretkey',(err,authData)=>{
+        if(err) {
+            res.sendStatus(403);
+        } else {
 
-
-    Trunk.find(function(err,trunks){
+    Trunk.find({userid: req.headers['user']},function(err,trunks){
         
         var xml1 = builder.create('include');
 
@@ -362,10 +377,12 @@ router.get('/api/trunks',(req,res,next)=>{
         fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
 
          });
+         res.json(trunks);
         
+        });
 
-
-        res.json(trunks);
+        
+    }
     });
 
     });
@@ -376,10 +393,17 @@ router.get('/api/trunks',(req,res,next)=>{
 
 
     //retrive inbound
-router.get('/api/inbounds',(req,res,next)=>{
-    Inbound.find({userid:req.query.userid},function(err,inbounds){
+router.get('/api/inbounds',verify.common,(req,res,next)=>{
+    jwt.verify(req.token, 'secretkey',(err,authData)=>{
+        if(err) {
+            res.sendStatus(403);
+        } else {
+
+    Inbound.find({userid: req.headers['user']},function(err,inbounds){
         res.json(inbounds);
-    }) 
+    });
+}
+    }); 
     });
     
 
@@ -480,6 +504,7 @@ router.post('/api/contact',(req,res,next)=>{
 //add outbound
 router.post('/api/outbound',(req,res,next)=>{
     var newOutbound = new Outbound({
+        userid:req.body.userid,
         name: req.body.name,
         dial: req.body.dial,
         dialpattern: req.body.dialpattern,
@@ -574,9 +599,12 @@ router.post('/api/extension',(req,res,next)=>{
 //add ring
 router.post('/api/ring',(req,res,next)=>{
     var newRing = new Ring({
+        userid:req.body.userid,
         name: req.body.name,
         extension: req.body.extension,
-        timeout: req.body.timeout
+        timeout: req.body.timeout,
+        userid: req.body.userid,
+
     })
     
 
@@ -600,6 +628,7 @@ router.post('/api/ring',(req,res,next)=>{
 //add trunk
 router.post('/api/trunk',(req,res,next)=>{
     var newTrunk = new Trunk({
+        userid:req.body.userid,
         trunkname: req.body.trunkname,
         username1: req.body.username1,
         password: req.body.password,

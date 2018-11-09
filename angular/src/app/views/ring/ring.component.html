@@ -4,24 +4,6 @@
     <mat-card>
       <mat-card-title><button mat-raised-button color="primary" (click)="openDialog()">Add</button>
       </mat-card-title>
-      
-
-<!--
-      <table>
-        <tr>
-           <th>name</th>
-           <th>extension</th>
-           <th>Timeout</th>
-           <th>Action</th>
-         </tr>
-     <tr *ngFor="let ring of rings">
-         <td>{{ring.name}}</td>
-         <td>{{ring.extension}}</td>
-         <td>{{ring.timeout}}</td>
-         <td><input type="submit" value="Delete"  (click)="deleteRing(ring._id)"></td>
-       </tr>
-     </table>
-    -->
      <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Extensions">
 
@@ -34,7 +16,7 @@
 <ng-container matColumnDef="extension">
 <mat-header-cell *matHeaderCellDef>Extension</mat-header-cell>
 <mat-cell *matCellDef="let user">{{user.extension}}</mat-cell>
-</ng-container>  
+</ng-container>
 <ng-container matColumnDef="timeout">
 <mat-header-cell *matHeaderCellDef>Timeout</mat-header-cell>
 <mat-cell *matCellDef="let user">{{user.timeout}}</mat-cell>

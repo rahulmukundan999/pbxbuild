@@ -7,10 +7,10 @@ import { FormBuilder, Validators, FormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { RingComponent,RingDialog } from './views/ring/ring.component';
+//import { RingComponent,RingDialog } from './views/ring/ring.component';
 //import { AccountComponent,DialogOverviewExampleDialog } from './views/account/account.component';
-import { InboundComponent,InboundDialog } from './views/inbound/inbound.component';
-import { TrunkComponent,TrunkDialog } from './views/trunk/trunk.component';
+//import { InboundComponent,InboundDialog } from './views/inbound/inbound.component';
+//import { TrunkComponent,TrunkDialog } from './views/trunk/trunk.component';
 import {
   MatFormFieldModule,
  MatAutocompleteModule,
@@ -61,7 +61,7 @@ import { AppComponent } from './app.component';
 // Import containers
 import { DefaultLayoutComponent,DefaultLayout1Component } from './containers';
 import { RegisterComponent } from './views/register/register.component';
-import { OutboundComponent,OutboundDialog } from './views/outbound/outbound.component';
+//import { OutboundComponent,OutboundDialog } from './views/outbound/outbound.component';
 import { ReceptionistComponent,ReceptionistDialog,WavDialog } from './views/receptionist/receptionist.component';
 
 
@@ -133,7 +133,7 @@ import{UserModule} from './views/user/user.module';
     FormsModule,
     MatFormFieldModule
     
-  ],entryComponents: [TrunkComponent,TrunkDialog,RingComponent,RingDialog,ReceptionistComponent,ReceptionistDialog,WavDialog,OutboundComponent,OutboundDialog,InboundComponent,InboundDialog],
+  ],entryComponents: [ReceptionistComponent,ReceptionistDialog,WavDialog],
   imports: [
     AppRoutingModule,
     HttpClientModule,
@@ -193,12 +193,7 @@ import{UserModule} from './views/user/user.module';
     AppComponent,
     ...APP_CONTAINERS,
     RegisterComponent,
-    InboundComponent,
-    InboundDialog,
-    OutboundComponent,OutboundDialog,
-    ReceptionistComponent,ReceptionistDialog,WavDialog,
-    RingComponent,RingDialog,
-    TrunkComponent,TrunkDialog
+    ReceptionistComponent,ReceptionistDialog,WavDialog
   ],
   providers: [{
     provide: LocationStrategy,

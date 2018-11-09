@@ -2,6 +2,7 @@ import { Component, OnInit,Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort,MatTableDataSource} from '@angular/material';
 import { TrunkService } from './trunk.service';
 import { Trunk } from './trunk';
+import {AuthService} from '../login/auth.service';
 
 
 
@@ -15,6 +16,7 @@ export class TrunkComponent implements OnInit {
 
   trunks: Trunk[];
   trunk: Trunk;
+  userid: any;
 
   dataSource;
   displayedColumns=['trunkname','username','password','trunkip','register','action'];
@@ -23,10 +25,10 @@ export class TrunkComponent implements OnInit {
   }
 
 
-  constructor(public dialog: MatDialog,private trunkService: TrunkService) { }
+  constructor(public dialog: MatDialog,private trunkService: TrunkService, private auth:AuthService) { }
   ngOnInit() {
-
-    this.trunkService.getTrunks()
+    this.userid = this.auth.getId();
+    this.trunkService.getTrunks(this.userid)
       .subscribe(trunks => this.dataSource = trunks);
    
   }
@@ -39,7 +41,7 @@ export class TrunkComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.trunkService.getTrunks()
+      this.trunkService.getTrunks(this.userid)
       .subscribe(trunks => this.dataSource = trunks);
 
 
@@ -63,7 +65,7 @@ export class TrunkComponent implements OnInit {
           }
         }
       }
-      this.trunkService.getTrunks()
+      this.trunkService.getTrunks(this.userid)
       .subscribe(trunks => this.dataSource = trunks);
     })
   }
@@ -90,10 +92,12 @@ export interface DialogData {
       password: string;
       trunkip: string;
       register=false;
+      userid: any;
       
     
       constructor( public dialogRef: MatDialogRef<TrunkDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData,private trunkService: TrunkService) {}
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,private trunkService: TrunkService,
+      private auth:AuthService) {}
        
        
       onNoClick(): void {
@@ -103,8 +107,8 @@ export interface DialogData {
 
     
       ngOnInit() {
-
-        this.trunkService.getTrunks()
+        this.userid = this.auth.getId();
+        this.trunkService.getTrunks(this.userid)
         .subscribe(trunks => this.trunks = trunks);
 
                  }
@@ -117,12 +121,12 @@ export interface DialogData {
                username1: this.username1,
                password: this.password,
                trunkip: this.trunkip,
-               register: this.register
+               register: this.register,
+               userid: this.userid,
              }
              this.trunkService.addTrunk(newTrunk)
              .subscribe(trunk=>{
-            this.trunks.push(trunk);
-            this.trunkService.getTrunks()
+            this.trunkService.getTrunks(this.userid)
            .subscribe(trunks => this.trunks = trunks);
              });
              this.dialogRef.close();

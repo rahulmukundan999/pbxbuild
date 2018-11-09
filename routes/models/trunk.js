@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 
 
 const TrunkSchema = mongoose.Schema({
+    userid:{
+        type: String,
+        required: true
+    },
     trunkname:{
         type: String,
         required: true

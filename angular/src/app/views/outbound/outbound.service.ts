@@ -3,6 +3,7 @@ import { Http, Headers,HttpModule} from '@angular/http';
 import { Outbound } from './outbound';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import {AuthService} from '../login/auth.service';
 
 
 @Injectable()
@@ -10,10 +11,16 @@ import { Observable } from 'rxjs';
 
 export class OutboundService {
 
-  constructor(private http: Http) { }
-  getOutbounds()
+  constructor(private http: Http,private auth:AuthService) { }
+  getOutbounds(userid)
 {
-  return this.http.get('/api/outbounds').pipe(
+  var headers = new Headers();
+  headers.append('authorization','Bearer'+' '+this.auth.getTokenid());
+  console.log(userid);
+  var user = userid;
+  console.log(typeof(user));
+  headers.append('user',user);
+  return this.http.get('/api/outbounds',{headers:headers}).pipe(
   map(res => res.json()));
 }
 addOutbound(newOutbound)

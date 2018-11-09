@@ -2,6 +2,7 @@ import { Component, OnInit,Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort,MatTableDataSource} from '@angular/material';
 import { RingService } from './ring.service';
 import { Ring } from './ring';
+import { AuthService } from '../login/auth.service';
 
 
 
@@ -16,6 +17,7 @@ export class RingComponent implements OnInit {
 
   rings: Ring[];
   ring: Ring;
+  userid: any;
   dataSource;
   displayedColumns=['name','extension','timeout','action'];
   applyFilter(filterValue: string) {
@@ -23,7 +25,7 @@ export class RingComponent implements OnInit {
   }
 
   
-  constructor(public dialog: MatDialog,private ringService: RingService) { }
+  constructor(public dialog: MatDialog,private ringService: RingService,private auth : AuthService) { }
   
   openDialog(): void {
     const dialogRef = this.dialog.open(RingDialog, {
@@ -34,7 +36,7 @@ export class RingComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.ringService.getRings()
+      this.ringService.getRings(this.userid)
       .subscribe(rings => this.dataSource = rings);
 
 
@@ -43,7 +45,8 @@ export class RingComponent implements OnInit {
   } 
   
   ngOnInit() {
-    this.ringService.getRings()
+    this.userid = this.auth.getId();
+    this.ringService.getRings(this.userid)
     .subscribe(rings => this.dataSource = rings);
 
 
@@ -67,7 +70,7 @@ export class RingComponent implements OnInit {
           }
         }
       }
-      this.ringService.getRings()
+      this.ringService.getRings(this.userid)
       .subscribe(rings => this.dataSource = rings);
     })
   }
@@ -91,9 +94,10 @@ export interface DialogData {
       name: any;
       extension: any;
       timeout: any;
+      userid: any;
     
       constructor( private ringService: RingService,public dialogRef: MatDialogRef<RingDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,private auth: AuthService) {}
         
      
     
@@ -108,12 +112,13 @@ export interface DialogData {
       const newRing={
     name: this.name,
     extension: this.extension,
-    timeout: this.timeout
+    timeout: this.timeout,
+    userid: this.userid,
   }
   this.ringService.addRing(newRing)
   .subscribe(ring=>{
  this.rings.push(ring);
- this.ringService.getRings()
+ this.ringService.getRings(this.userid)
 .subscribe(rings => this.rings = rings);
   });
   this.dialogRef.close();
@@ -123,7 +128,8 @@ export interface DialogData {
 
     
 ngOnInit() {
-  this.ringService.getRings()
+  this.userid = this.auth.getId();
+  this.ringService.getRings(this.userid)
   .subscribe(rings => this.rings = rings);
     }
 

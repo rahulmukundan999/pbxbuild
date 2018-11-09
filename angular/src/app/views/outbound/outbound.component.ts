@@ -2,6 +2,8 @@ import { Component, OnInit,Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort,MatTableDataSource} from '@angular/material';
 import { OutboundService } from './outbound.service';
 import { Outbound } from './outbound';
+import { AuthService } from '../login/auth.service';
+
 
 
 @Component({
@@ -15,10 +17,12 @@ export class OutboundComponent implements OnInit {
   outbounds: Outbound[];
   outbound: Outbound;
   displayedColumns=['name','dial','dialpattern','callerid','trunk','action'];
+  userid: any;
 
 
 
-  constructor(public dialog: MatDialog,private outboundService: OutboundService) { }
+  constructor(public dialog: MatDialog,private outboundService: OutboundService,
+  private auth:AuthService) { }
  
   openDialog(): void {
     const dialogRef = this.dialog.open(OutboundDialog, {
@@ -29,7 +33,7 @@ export class OutboundComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.outboundService.getOutbounds()
+      this.outboundService.getOutbounds(this.userid)
       .subscribe(outbounds => this.outbounds = outbounds);
 
 
@@ -38,7 +42,8 @@ export class OutboundComponent implements OnInit {
   } 
   
   ngOnInit() {
-    this.outboundService.getOutbounds()
+    this.userid = this.auth.getId();
+    this.outboundService.getOutbounds(this.userid)
     .subscribe(outbounds => this.outbounds = outbounds);
 
 
@@ -62,7 +67,7 @@ export class OutboundComponent implements OnInit {
           }
         }
       }
-      this.outboundService.getOutbounds()
+      this.outboundService.getOutbounds(this.userid)
       .subscribe(outbounds => this.outbounds = outbounds);
     })
   }
@@ -87,10 +92,11 @@ export interface DialogData {
       dialpattern: any;
       callerid:any;
       trunk: any;
+      userid: any;
 
     
       constructor(private outboundService: OutboundService, public dialogRef: MatDialogRef<OutboundDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,private auth:AuthService) {}
         
     
       onNoClick(): void {
@@ -106,12 +112,13 @@ export interface DialogData {
     dial: this.dial,
     dialpattern: this.dialpattern,
     callerid: this.callerid,
-    trunk: this.trunk
+    trunk: this.trunk,
+    userid:this.userid
   }
   this.outboundService.addOutbound(newOutbound)
   .subscribe(outbound=>{
  this.outbounds.push(outbound);
- this.outboundService.getOutbounds()
+ this.outboundService.getOutbounds(this.userid)
 .subscribe(outbounds => this.outbounds = outbounds);
   });
   this.dialogRef.close();
@@ -121,7 +128,8 @@ export interface DialogData {
 
     
 ngOnInit() {
-  this.outboundService.getOutbounds()
+  this.userid = this.auth.getId();
+  this.outboundService.getOutbounds(this.userid)
   .subscribe(outbounds => this.outbounds = outbounds);
     }
 
