@@ -25,12 +25,16 @@ export class ExtensionComponent implements OnInit {
   extensions: Extension[];
   extension: Extension;
   userid: any;
+  limit:any;
 
   
   constructor(public dialog: MatDialog,private extensionService: ExtensionService,
   private auth: AuthService) { }
  
   openDialog(): void {
+    if(this.limit === 0) {
+      alert("Extension Limit Full....Please Upgrade");
+    } else {
     const dialogRef = this.dialog.open(ExtensionDialog, {
       disableClose: false,
       width: '460px',
@@ -43,10 +47,15 @@ export class ExtensionComponent implements OnInit {
       .subscribe(extensions => this.extensions = extensions);
       this.extensionService.getExtensions(this.userid)
       .subscribe(extensions =>  this.dataSource=new MatTableDataSource(extensions));
-
+      this.extensionService.getLimit(this.userid)
+      .subscribe(limit => {
+        this.limit = limit[0].limit;
+        console.log('limit',this.limit);
+      });
 
      
     });
+  }
   } 
   
   ngOnInit() {
@@ -57,7 +66,11 @@ export class ExtensionComponent implements OnInit {
       this.extensions = extensions;
       console.log(extensions);
     });
-
+    this.extensionService.getLimit(this.userid)
+    .subscribe(limit => {
+      this.limit = limit[0].limit;
+      console.log('limit',this.limit);
+    });
     this.extensionService.getExtensions(this.userid)
     .subscribe(extensions =>  this.dataSource=new MatTableDataSource(extensions));
   
@@ -83,6 +96,15 @@ export class ExtensionComponent implements OnInit {
       this.extensionService.getExtensions(this.userid)
       .subscribe(extensions => this.extensions = extensions);
       this.dataSource=new MatTableDataSource(extensions);
+      this.extensionService.getlextension(this.userid,++this.limit)
+ .subscribe(limits => {
+   console.log(limits);
+   this.extensionService.getLimit(this.userid)
+   .subscribe(limit => {
+     this.limit = limit[0].limit;
+     console.log('limit',this.limit);
+   });
+ });
     })
   }
 }
@@ -106,6 +128,7 @@ export interface DialogData {
       password: string;
       email: string;
       userid: any;
+      limit:any;
     
     
       constructor(private extensionService: ExtensionService, public dialogRef: MatDialogRef<ExtensionDialog>,
@@ -131,12 +154,14 @@ export interface DialogData {
   this.extensionService.addExtension(newExtension)
   .subscribe(extension=>{
  alert(extension.msg);
+ this.extensionService.getlextension(this.userid,--this.limit[0].limit)
+ .subscribe(limits => {
+   console.log(limits)
+ });
  this.extensionService.getExtensions(this.userid)
 .subscribe(extensions => this.extensions = extensions);
   });
   this.dialogRef.close();
-  
-
 }
 
     
@@ -144,5 +169,12 @@ ngOnInit() {
   this.userid = this.auth.getId();
   this.extensionService.getExtensions(this.userid)
   .subscribe(extensions => this.extensions = extensions);
+  this.extensionService.getLimit(this.userid)
+    .subscribe(limit => {
+      console.log('limit',limit);
+      this.limit = limit;
+      console.log(this.limit[0].limit);
+    });
     }
+    
  }

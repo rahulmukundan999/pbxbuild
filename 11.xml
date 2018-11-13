@@ -1,0 +1,18 @@
+<include>
+  <user id="11">
+    <params>
+      <param name="password" value="11"/>
+      <param name="vm-password" value="11"/>
+    </params>
+    <variables>
+      <variable name="toll_allow" value="domestic,international,local"/>
+      <variable name="accountcode" value="11"/>
+      <variable name="user_context" value="default"/>
+      <variable name="effective_caller_id_name" value="Extension 11"/>
+      <variable name="effective_caller_id_number" value="11"/>
+      <variable name="outbound_caller_id_name" value="$${1}"/>
+      <variable name="outbound_caller_id_number" value="$${1}"/>
+      <variable name="callgroup" value="techsupport"/>
+    </variables>
+  </user>
+</include>

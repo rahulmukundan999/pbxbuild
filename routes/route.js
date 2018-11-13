@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Contact = require('./models/contacts');
 const Extension = require('./models/extension');
+const Lextension = require('./models/lextension');
 const Trunk = require('./models/trunk');
 const Extension1 = require('./models/extension');
 const Inbound = require('./models/inbound');
@@ -83,6 +84,29 @@ router.get("/api/confirmation/:token/:check", function(req, res) {
         }
     });
 });
+router.get("/api/lextension", function(req, res) {
+console.log(req.headers['limit']);
+    Lextension.findOne({userid:req.headers['userid']},function(err,user){
+        if(user) {
+    //res.json(500);
+    console.log('found',user);
+    var user=user;
+    Lextension.findByIdAndUpdate(user._id,{$set:{limit:req.headers['limit']}},{new:true}, (err, todo) => {
+        console.log(todo);
+        // Handle any possible database errors
+            if (err) {
+            res.json({msg:'error'});
+            }
+            //alert('Mail Verified Successfully');
+            res.json({msg:"Updated"});
+
+        });
+        }
+        else {
+            res.json({msg:'failed'});
+        }
+    });
+});
        // handle logout
  router.post("/api/logout", function(req, res) {
         req.logOut();
@@ -151,6 +175,19 @@ Contact.find({userid: req.headers['user']},function(err,contacts){
         } 
     });
 });
+
+    //retrive limit
+    router.get('/api/limit',verify.common,(req,res,next)=>{
+        jwt.verify(req.token, 'secretkey',(err,authData)=>{
+            if(err) {
+                res.sendStatus(403);
+            } else {
+    Lextension.find({userid: req.headers['user']},function(err,limit){
+        res.json(limit);
+    });
+            } 
+        });
+    });
 
 
 //retrive wAVS
@@ -451,11 +488,12 @@ if(req.file)
     console.log(req.file);
     req.body.photo=req.file.filename;
 }
+/*
 var newItem = new Wav();
 newItem.img.data = fs.readFileSync(req.file.path)
 newItem.img.contentType = 'image/jpg';
 newItem.save();
-
+*/
 res.json('File Uploaded')
    
 });
@@ -554,9 +592,27 @@ console.log(usercheck);
             }
             mail.check(user);
             console.log(user);
+            console.log(user._id);
+            var a = new Lextension({
+                userid:user._id,
+                limit:10
+            });
+            console.log(a);
+            a.save((err,lextension)=>{
+                if(err)
+                {
+                    //res.json({msg:'Failed to add extension limit'});
+                }
+                else{
+                    
+                   //res.json({msg:'Limit added'});
+        
+                }
+            })
+
             res.json(100);
           });
-    })
+    })  
 }
     });
 });
