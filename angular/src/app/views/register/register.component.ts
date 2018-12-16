@@ -12,7 +12,6 @@ name: any;
 password: any;
 email: any;
 phone : any;
-plan: any;
 dis = true;
 exist = false;
   constructor(private router:Router, private registerservice: RegisterService,
@@ -47,7 +46,7 @@ exist = false;
         this.dis = true;
        if(reg === 100) {
          console.log('Added');
-         alert('Added Successfully');
+         alert('Added Successfully...Please Verify Email....');
         this.router.navigate(['/login']);
        }
        else if(reg === 500) {

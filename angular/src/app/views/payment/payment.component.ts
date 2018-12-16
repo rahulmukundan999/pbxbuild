@@ -33,6 +33,7 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
   name:any;
   email:any;
   plan: any;
+  extension: any;
   public payPalConfig?: PayPalConfig;
 
   constructor(private cd: ChangeDetectorRef, private payment: PaymentService,public auth:AuthService,
@@ -98,10 +99,12 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('Something is wrong:', error);
     } else {
       console.log('Success!', token);
+      this.initextension();
       var a = {
         token:token.id,
         id:this.id,
-        amount:this.plan
+        amount:this.plan,
+        extension:this.extension
       }
       this.payment.stripecharge(a).subscribe(data=>{
         this.paydis = true;
@@ -115,6 +118,18 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
       // ...send the token to the your backend to process the charge
+    }
+  }
+  initextension() {
+    switch(this.plan) {
+      case '100':this.extension = 10;
+      break;
+      case '250':this.extension = 25;
+      break;
+      case '500':this.extension = 100;
+      break;
+      case '1000':this.extension = 1000;
+      break;
     }
   }
   tabClick(event) {

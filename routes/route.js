@@ -603,25 +603,6 @@ console.log(usercheck);
               return next(err);
             }
             mail.check(user);
-            console.log(user);
-            console.log(user._id);
-            var a = new Lextension({
-                userid:user._id,
-                limit:10
-            });
-            console.log(a);
-            a.save((err,lextension)=>{
-                if(err)
-                {
-                    //res.json({msg:'Failed to add extension limit'});
-                }
-                else{
-                    
-                   //res.json({msg:'Limit added'});
-        
-                }
-            })
-
             res.json(100);
           });
     })  
@@ -927,7 +908,8 @@ function(err,updatedcontact){
 });
 router.post("/api/charge", (req, res) => {
     
-        let amount = req.body.amount; // 500 cents means $5 
+        let amount = req.body.amount;
+        let extension = req.body.extension; // 500 cents means $5 
          console.log(req.body.token);
          var id = req.body.id;
         // create a customer 
@@ -951,6 +933,24 @@ router.post("/api/charge", (req, res) => {
                             if (err) {
                             return res.status(500).send(err);
                             }
+                            //console.log(user);
+                            //console.log(user._id);
+            var a = new Lextension({
+                userid:id,
+                limit:extension
+            });
+            console.log(a);
+            a.save((err,lextension)=>{
+                if(err)
+                {
+                    //res.json({msg:'Failed to add extension limit'});
+                }
+                else{
+                    
+                   //res.json({msg:'Limit added'});
+        
+                }
+            })
                             //alert('Mail Verified Successfully');
                             res.json({msg:charge,status:200});
                         });
