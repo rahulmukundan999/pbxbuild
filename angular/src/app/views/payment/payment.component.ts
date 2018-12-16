@@ -35,7 +35,7 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
   plan: any;
   public payPalConfig?: PayPalConfig;
 
-  constructor(private cd: ChangeDetectorRef, private payment: PaymentService,private auth:AuthService,
+  constructor(private cd: ChangeDetectorRef, private payment: PaymentService,public auth:AuthService,
   private route : Router ) {}
 
   ngOnInit() {

@@ -76,22 +76,12 @@
           </section>
           <section>
             <h2>Payment Information</h2>
-            <mat-tab-group>
-              <mat-tab label="Credit card">
-
-              
             <div class="form-row payment-info card visible">
                 <label for="card-info">Card Info</label>
                 <div id="card-info" style="width: 30em;margin-left:15px" #cardInfo required></div>
             
                 <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
               </div>
-            </mat-tab>
-            <mat-tab label="Paypal">
-              
-
-            </mat-tab>
-          </mat-tab-group>
           </section>
           <br>
           <button mat-button (click)="onSubmit(checkout)" [disabled]="!checkout.valid">Pay €{{plan}}</button>
