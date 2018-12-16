@@ -143,6 +143,14 @@ export interface DialogData {
 
       addExtension()
       {
+        var flag = 0;
+        for(var i=0;i<this.extensions.length;i++) {
+          if(this.extensions[i].extensionno === this.extensionno)
+          flag = 1;
+        }
+        if(flag === 1) {
+          alert('Name exist please choose new name');
+        } else if(flag === 0) {
       const newExtension={
       userid: this.userid,
       extensionno: this.extensionno,
@@ -162,6 +170,7 @@ export interface DialogData {
 .subscribe(extensions => this.extensions = extensions);
   });
   this.dialogRef.close();
+}
 }
 
     

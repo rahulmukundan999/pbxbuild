@@ -21,11 +21,13 @@
                   <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Phone" name="phone" [(ngModel)]="phone" required>
                     </div>
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" placeholder="Plan" name="plan" [(ngModel)]="plan" required>
+                      </div>
                     <div>
                 <button type="button" [disabled]="!form.valid" class="btn btn-block btn-success" (click)="save()" *ngIf="dis"> Create Account</button>   
                 <button mat-raised-button color="primary" (click)="nav()" *ngIf="dis">Login</button>
-              </div>
-                <div align="center"><mat-spinner [diameter]="32" *ngIf="!dis"></mat-spinner></div>          
+              </div> 
               </form>
             </mat-card>
             </div>
@@ -35,3 +37,4 @@
     </div>
   </main>
 </div>
+

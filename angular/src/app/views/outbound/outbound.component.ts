@@ -89,7 +89,7 @@ export interface DialogData {
       outbound: Outbound;
       name: any;
       dial: any;
-      dialpattern: any;
+      dialpattern: string;
       callerid:any;
       trunk: any;
       userid: any;
@@ -107,6 +107,17 @@ export interface DialogData {
    
       addOutbound()
       {
+        var h = this.dialpattern.split('');
+        console.log(h);
+        var flag = 0;
+        for(var i=0;i<this.outbounds.length;i++) {
+          if(this.outbounds[i].name === this.name) {
+            flag = 1;
+          }
+        }
+        if(flag === 1) {
+          alert('Name already taken');
+        } else {
       const newOutbound={
     name: this.name,
     dial: this.dial,
@@ -121,8 +132,23 @@ export interface DialogData {
  this.outboundService.getOutbounds(this.userid)
 .subscribe(outbounds => this.outbounds = outbounds);
   });
+  console.log(this.dialpattern);
+  console.log(this.dialpattern[1]);
+  //var b = JSON.parse(this.dialpattern);
+  //console.log('b',b[1]);
+  var l = '';
+  for(var i = 0;i < h.length;i++) {
+    if(h[i]==='x')
+    {
+      l+='[0-9]';
+    } else {
+      l+=h[i];
+    }
+  }
+  console.log(l);
+ 
   this.dialogRef.close();
-  
+}
 
 }
 

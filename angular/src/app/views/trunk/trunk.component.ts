@@ -115,7 +115,15 @@ export interface DialogData {
 
                  addTrunk()
                  {
-                   
+                   var flag = 0;
+                   for(var i =0;i<this.trunks.length;i++) {
+                     if(this.trunks[i].trunkname === this.trunkname) {
+                     flag = 1;
+                     }
+                   }
+                   if(flag === 1) {
+                     alert('Name already taken');
+                   } else {
                  const newTrunk={
                trunkname: this.trunkname,
                username1: this.username1,
@@ -131,7 +139,7 @@ export interface DialogData {
              });
              this.dialogRef.close();
              
-           
+            }
            }
            
 

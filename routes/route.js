@@ -19,8 +19,20 @@ const jwt = require('jsonwebtoken');
 var a =  require('./verify/verifys.js');
 var verify = new a();
 var b = require('./verify/mail.js');
+const paypal = require('paypal-rest-sdk');
 var mail = new b();
+//const keyPublishable = process.env.PUBLISHABLE_KEY;
+//const keySecret = process.env.SECRET_KEY;
+const stripe = require("stripe")('sk_test_mjlCuBBzkf4cfBU3arpajjDU');
 //console.log(b.check());
+
+
+paypal.configure({
+    'mode': 'sandbox', //sandbox or live
+    'client_id': 'AeKIfAx7QGuQpdHYiomDZJ6yZbq4v4IDNbIhz4Io9S9WxRwyeWfIcv582AEmaEKF7m2QvRj_-6PMAo7E',
+    'client_secret': 'EOkPIUsTZ_Fuf0DXVCcPiVUsmHvLob4HaIPVWkZFucrUajeU21p-3ZJLbNHytOJV5yb55PmgNkCDMyus'
+  });
+
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -285,7 +297,7 @@ router.get('/api/outbounds',verify.outbound,(req,res,next)=>{
          xml.end({pretty:true});
 
                
-        fs.writeFile('/usr/local/freeswitch/conf/dialplan/outbound.xml',xml,function(err){
+        fs.writeFile('outbound.xml',xml,function(err){
 
 
 
@@ -912,5 +924,88 @@ function(err,updatedcontact){
 }
 );
 
-})
+});
+router.post("/api/charge", (req, res) => {
+    
+        let amount = req.body.amount; // 500 cents means $5 
+         console.log(req.body.token);
+         var id = req.body.id;
+        // create a customer 
+        stripe.customers.create({
+            email: 'rahulmukundan999@gmail.com', // customer email, which user need to enter while making payment
+            source: req.body.token // token for the given card 
+        })
+        .then(customer =>{
+            console.log(customer);
+            stripe.charges.create({ // charge the customer
+            amount,
+            description: "Sample Charge",
+                currency: "usd",
+                customer: customer.id
+            },function(err,charge) {
+                if(err) {
+                    res.json({msg:err,status:400});
+                } else {
+                    User.findByIdAndUpdate(id,{$set:{paid:true}},{new:true}, (err, todo) => {
+                        // Handle any possible database errors
+                            if (err) {
+                            return res.status(500).send(err);
+                            }
+                            //alert('Mail Verified Successfully');
+                            res.json({msg:charge,status:200});
+                        });
+                }
+            })
+        })
+ // render the charge view: views/charge.pug
+     
+    });
+    
+    
+
+router.get('/api/paypal',(req,res)=> res.sendfile('./views/index.html'));
+router.get('/api/success',(req,res)=>{
+const payerId = req.query.PayerID;
+const paymentId = req.query.paymentId;
+console.log('payer',payerId);
+console.log('payment',paymentId);
+const paymentjson = {
+    "payer_id":payerId,
+    "transactions":[{
+        "amount":{
+            "currency":"USD",
+            "total":"25"
+        }
+    }]
 };
+paypal.payment.execute(paymentId,paymentjson,function (error,payment){
+    if(error) {
+        console.log(error.response);
+        throw error;
+    } else {
+        console.log(JSON.stringify(payment));
+        res.redirect('/#/login')
+        res.json({status:200,message:'Success'});
+    }
+})
+});
+router.get('/api/paymentsuccess',(req,res)=>{
+var a = req.query.source;
+console.log('a',a); 
+stripe.charges.create({
+    amount: 1099,
+    currency: "eur",
+    source: a,
+  }, function(err, charge) {
+      if(err) {
+      console.log(err);
+      res.json({msg:'Sorry Payment Not Succedded'});
+      } else {
+      console.log('charge',charge.succeeded);  
+    res.json({msg:"Success",status:charge.status});
+      }
+    // asynchronously called
+  });
+});
+
+}

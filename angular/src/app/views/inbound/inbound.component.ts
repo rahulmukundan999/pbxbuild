@@ -146,6 +146,16 @@ if(this.formob!='')
 
       addInbound()
       {
+        var flag = 0;
+        for(var i=0;i<this.inbounds.length;i++) {
+          if(this.inbounds[i].name === this.name) {
+            flag = 1;
+          }
+        }
+         if(flag === 1) {
+           alert('Name already exist');
+         } else {
+
       const newInbound={
         name: this.name,
         didnumber: this.didnumber,
@@ -163,7 +173,7 @@ if(this.formob!='')
   });
   this.dialogRef.close();
   
-
+         }
 }
 
     

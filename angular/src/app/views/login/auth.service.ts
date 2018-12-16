@@ -6,8 +6,14 @@ export class AuthService {
   sendToken(token: string) {
     localStorage.setItem("LoggedInUser", token)
   }
+  sendPaytoken(payToken) {
+    localStorage.setItem("payToken", payToken)
+  }
   getToken() {
     return localStorage.getItem("LoggedInUser")
+  }
+  getPayToken() {
+    return localStorage.getItem("payToken")
   }
   sendId(token: string) {
     localStorage.setItem("UserId", token)
@@ -27,6 +33,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem("LoggedInUser");
     localStorage.removeItem("UserId");
+    localStorage.removeItem('payToken')
     this.myRoute.navigate(["login"]);
   }
 

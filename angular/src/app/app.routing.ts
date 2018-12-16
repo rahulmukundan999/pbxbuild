@@ -73,13 +73,18 @@ export const routes: Routes = [
        data: {
       title: 'Login Page'
     }
-  },
+  },     
   {
     path: 'register',
     component: RegisterComponent,
     data: {
       title: 'Register Page'
     }
+  },
+   {
+    path:'payment',
+    loadChildren:'./views/payment/payment.module#PaymentModule',
+    canActivate: [AuthGuard1]
   },
   {
     path: '',

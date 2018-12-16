@@ -68,6 +68,10 @@ export const navItems = [
 {
   name: 'Trunk',
   url: '/trunk'
+},
+{
+  name: 'Payment',
+  url: '/payment'
 }
 
   

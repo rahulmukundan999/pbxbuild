@@ -109,6 +109,15 @@ export interface DialogData {
  
       addRing()
       {
+        var flag = 0;
+        for(var i=0;i<this.rings.length;i++) {
+          if(this.rings[i].name === this.name) {
+            flag = 1;
+          }
+        }
+        if(flag === 1) {
+          alert('Name already taken');
+        } else {
       const newRing={
     name: this.name,
     extension: this.extension,
@@ -123,7 +132,7 @@ export interface DialogData {
   });
   this.dialogRef.close();
   
-
+        }
 }
 
     

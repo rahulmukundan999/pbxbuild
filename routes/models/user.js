@@ -10,6 +10,10 @@ var userSchema = mongoose.Schema({
   active:{
       type:Boolean,
       default:false
+  },
+  paid:{
+      type:Boolean,
+      default:false
   }
 });
 

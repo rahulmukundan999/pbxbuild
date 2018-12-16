@@ -10,7 +10,6 @@ import {AuthService} from '../login/auth.service';
 
 
 export class OutboundService {
-
   constructor(private http: Http,private auth:AuthService) { }
   getOutbounds(userid)
 {

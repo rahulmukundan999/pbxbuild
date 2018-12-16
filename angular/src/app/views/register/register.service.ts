@@ -17,4 +17,10 @@ export class RegisterService {
   map(res => res.json()));
 
   }
+  payment(user) {
+    var headers = new Headers();
+  headers.append('Content-Type','Application/Json');
+    return this.http.post('/api/charge',{headers:headers}).pipe(
+      map(res => res.json()));
+  }
 }

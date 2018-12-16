@@ -61,6 +61,10 @@ check()
    } else if(user.status === 200 && user.user.active === false) {
     console.log("verify email");
       alert("verify email");
+   } else if (user.status === 200 && user.user.paid === false) {
+     alert('Please purchase a plan');
+     this.auth.sendPaytoken(user.user._id);
+     this.myRoute.navigate(['payment']);
    }
    else {console.log('fwf');
      console.log(user);
