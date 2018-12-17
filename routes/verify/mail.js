@@ -21,7 +21,8 @@ class mail {
         to: user.email, // list of receivers
         subject: 'Hello '+user.username, // Subject line
         text: 'Welcome to Hirepbx', // plain text body
-        html: '<b>Hello '+ user.username+'</b><br><p> Thanks for showing interest in us</p><br><p>Please verify the mail '+ url + '<p>' // html body
+        html: '<b>Hello '+ user.username+'</b><br><p> Thanks for showing interest in us</p><br><p>Please click the button to verify the mail<br><a href='+url+'><input type="button" value="Click Me"</a></p>'
+        // html body
     };
 
     // send mail with defined transport object

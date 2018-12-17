@@ -25,6 +25,11 @@ var mail = new b();
 //const keySecret = process.env.SECRET_KEY;
 const stripe = require("stripe")('sk_test_mjlCuBBzkf4cfBU3arpajjDU');
 //console.log(b.check());
+const Nexmo = require('nexmo')
+const nexmo = new Nexmo({
+  apiKey: '9e2dcd11',
+  apiSecret: 'QTVnbRjiL3kc7g9z'
+})
 
 
 paypal.configure({
@@ -907,11 +912,12 @@ function(err,updatedcontact){
 
 });
 router.post("/api/charge", (req, res) => {
-    
-        let amount = req.body.amount;
+        let index = req.body.index;
+        var id = req.body.id;
         let extension = req.body.extension; // 500 cents means $5 
+        if(index === 1) {
+        let amount = req.body.amount;
          console.log(req.body.token);
-         var id = req.body.id;
         // create a customer 
         stripe.customers.create({
             email: 'rahulmukundan999@gmail.com', // customer email, which user need to enter while making payment
@@ -952,13 +958,50 @@ router.post("/api/charge", (req, res) => {
                 }
             })
                             //alert('Mail Verified Successfully');
+                            const from = 'Nexmo'
+                            const to = '918147806874'
+                            const text = 'Hello from Nexmo ...User amount'+amount+'id'+id;
+                             nexmo.message.sendSms(from, to, text,(err, responseData) => {
+                                if (err) {
+                                  console.log(err);
+                                } else {
+                                  console.log(responseData);
+                                }
+                              })
                             res.json({msg:charge,status:200});
                         });
                 }
             })
         })
  // render the charge view: views/charge.pug
-     
+    } else if(index === 2) {
+            User.findByIdAndUpdate(id,{$set:{paid:true}},{new:true}, (err, todo) => {
+                // Handle any possible database errors
+                    if (err) {
+                    return res.status(500).send(err);
+                    }
+                    //console.log(user);
+                    //console.log(user._id);
+    var a = new Lextension({
+        userid:id,
+        limit:extension
+    });
+    console.log(a);
+    a.save((err,lextension)=>{
+        if(err)
+        {
+            //res.json({msg:'Failed to add extension limit'});
+        }
+        else{
+            
+           //res.json({msg:'Limit added'});
+
+        }
+    })
+                    //alert('Mail Verified Successfully');
+                    res.json({msg:'paid',status:200});
+                });
+        }
     });
     
     

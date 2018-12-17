@@ -1,8 +1,6 @@
 <mat-card style="background-color:#F0FFF0	">
   <div id="main" class="checkout">
       <div id="checkout">
-            <ngx-paypal [config]="payPalConfig"></ngx-paypal><p>Or Pay through credit card</p>
-            <br>
         <form #checkout="ngForm">
           <section>
             <fieldset class="with-state">
@@ -65,7 +63,7 @@
               </label>
               <label>
                 <span>Plan</span>
-                <mat-select placeholder="select plan - Required" [(ngModel)]="plan" name="plan" style="width: 70%" required>
+                <mat-select (selectionChange)="paypalcheck()" placeholder="select plan - Required" [(ngModel)]="plan" name="plan" style="width: 70%" required>
                   <mat-option value="100">Plan A</mat-option>
                   <mat-option value="250">Plan B</mat-option>
                   <mat-option value="500">Plan C</mat-option>
@@ -85,8 +83,13 @@
               </div>
           </section>
           <br>
-          <button mat-button (click)="onSubmit(checkout)" [disabled]="!checkout.valid">Pay €{{plan}}</button>
+          <mat-spinner [diameter]="25" *ngIf="paydis"></mat-spinner>
+          <button mat-button (click)="onSubmit(checkout)" [disabled]="!checkout.valid" *ngIf="!paydis">Pay €{{plan}}</button>
+          <br><p>Or Pay through paypal</p>
           <br>
+          <span *ngIf="checkout.valid"><ngx-paypal [config]="payPalConfig"></ngx-paypal>
+          </span>
+            <br>
         </form>
         <button mat-button style="background-color:lightgreen" (click)="auth.logout()">Log Out</button>
         <div id="card-errors" class="element-errors"></div>

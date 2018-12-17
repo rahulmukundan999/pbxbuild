@@ -775,3 +775,5 @@ THE SOFTWARE.
 
 
 ngx-paypal
+
+@angular/material/progress-spinner

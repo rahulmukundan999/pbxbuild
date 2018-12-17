@@ -28,7 +28,7 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
   card: any;
   cardHandler = this.onChange.bind(this);
   error: string;
-  paydis = true;
+  paydis = false;
   id: any;
   name:any;
   email:any;
@@ -47,27 +47,52 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.payPalConfig = new PayPalConfig(PayPalIntegrationType.ClientSideREST, PayPalEnvironment.Sandbox, {
       commit: true,
       client: {
-        sandbox: 'yourSandboxKey'
+        sandbox: 'AeKIfAx7QGuQpdHYiomDZJ6yZbq4v4IDNbIhz4Io9S9WxRwyeWfIcv582AEmaEKF7m2QvRj_-6PMAo7E'
       },
       button: {
         label: 'paypal',
       },
       onPaymentComplete: (data, actions) => {
+        console.log(data,actions);
         console.log('OnPaymentComplete');
+        this.initextension();
+        var a = {
+          id:this.id,
+          extension:this.extension,
+          index:2
+        };
+        this.payment.stripecharge(a).subscribe(data=>{
+          console.log(data);
+          if(data.status === 200) {
+            alert('Paid Successfully ....Please Login');
+            this.auth.logout();
+            this.route.navigate(['login']);
+          } else {
+            alert('Sorry could not transact');
+          }
+          this.paydis = false;
+        });
       },
       onCancel: (data, actions) => {
         console.log('OnCancel');
+        console.log(data);
+        alert('Payment failed');
       },
       onError: (err) => {
+        console.log(err);
         console.log('OnError');
+        //alert('Error in payment.....');
       },
       transactions: [{
         amount: {
           currency: 'USD',
-          total: 9
+          total: parseInt(this.plan)
         }
       }]
     });
+  }
+  paypalcheck() {
+    this.initConfig();
   }
 
   ngAfterViewInit() {
@@ -91,11 +116,11 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cd.detectChanges();
   }
   async onSubmit(form: NgForm) {
-    this.paydis = false;
+    this.paydis = true;
     const { token, error } = await stripe.createToken(this.card);
 
     if (error) {
-      this.paydis = true;
+      this.paydis = false;
       console.log('Something is wrong:', error);
     } else {
       console.log('Success!', token);
@@ -104,10 +129,10 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
         token:token.id,
         id:this.id,
         amount:this.plan,
-        extension:this.extension
+        extension:this.extension,
+        index:1
       }
       this.payment.stripecharge(a).subscribe(data=>{
-        this.paydis = true;
         console.log(data);
         if(data.status === 200) {
           alert('Paid Successfully ....Please Login');
@@ -116,19 +141,20 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           alert('Sorry could not transact');
         }
+        this.paydis = false;
       });
       // ...send the token to the your backend to process the charge
     }
   }
   initextension() {
     switch(this.plan) {
-      case '100':this.extension = 10;
+      case '100':this.extension = 1000;
       break;
-      case '250':this.extension = 25;
+      case '250':this.extension = 2500;
       break;
-      case '500':this.extension = 100;
+      case '500':this.extension = 10000;
       break;
-      case '1000':this.extension = 1000;
+      case '1000':this.extension = 100000;
       break;
     }
   }
