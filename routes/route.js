@@ -404,33 +404,33 @@ router.get('/api/trunks',verify.common,(req,res,next)=>{
 
     Trunk.find({userid: req.headers['user']},function(err,trunks){
         
-        var xml1 = builder.create('include');
+//         var xml1 = builder.create('include');
 
-        for(var i=0; i<trunks.length; i++)
-        {
-            if(trunks[i].register==true)
-            {
-         xml1.ele('gateway',{'name':trunks[i].trunkname})
-        .ele('param',{'name':'proxy','value':trunks[i].trunkip}).up()
-        .ele('param',{'name':'register','value':trunks[i].register}).up()
-        .ele('param',{'name':'username','value':trunks[i].username1}).up()
-        .ele('param',{'name':'password','value':trunks[i].password}).up()
-        .up();
-            }
-    else
-    {
-        xml1.ele('gateway',{'name':trunks[i].trunkname})
-        .ele('param',{'name':'proxy','value':trunks[i].trunkip}).up()
-        .ele('param',{'name':'register','value':trunks[i].register}).up()
-        .ele('param',{'name':'caller-id-in-from','value':true}).up()
-        .up();
+//         for(var i=0; i<trunks.length; i++)
+//         {
+//             if(trunks[i].register==true)
+//             {
+//          xml1.ele('gateway',{'name':trunks[i].trunkname})
+//         .ele('param',{'name':'proxy','value':trunks[i].trunkip}).up()
+//         .ele('param',{'name':'register','value':trunks[i].register}).up()
+//         .ele('param',{'name':'username','value':trunks[i].username1}).up()
+//         .ele('param',{'name':'password','value':trunks[i].password}).up()
+//         .up();
+//             }
+//     else
+//     {
+//         xml1.ele('gateway',{'name':trunks[i].trunkname})
+//         .ele('param',{'name':'proxy','value':trunks[i].trunkip}).up()
+//         .ele('param',{'name':'register','value':trunks[i].register}).up()
+//         .ele('param',{'name':'caller-id-in-from','value':true}).up()
+//         .up();
 
-    }
-}
-        xml1.end({ pretty: true});
-        fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
+//     }
+// }
+//         xml1.end({ pretty: true});
+//         fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
 
-         });
+//          });
          res.json(trunks);
         
         });
