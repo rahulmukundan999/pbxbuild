@@ -692,17 +692,17 @@ router.post('/api/trunk',(req,res,next)=>{
     console.log(newTrunk);
     
 
-    newTrunk.save((err,trunk)=>{
-        if(err)
-        {
-            res.json({msg:'Failed to add extension'});
-        }
-        else{
+    // newTrunk.save((err,trunk)=>{
+    //     if(err)
+    //     {
+    //         res.json({msg:'Failed to add extension'});
+    //     }
+    //     else{
             
-           res.json({msg:'added'});
+    //        res.json({msg:'added'});
 
-        }
-    })
+    //     }
+    // })
 });
 
 
