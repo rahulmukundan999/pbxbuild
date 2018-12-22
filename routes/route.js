@@ -689,6 +689,7 @@ router.post('/api/trunk',(req,res,next)=>{
         trunkip: req.body.trunkip,
         register: req.body.register
     })
+    console.log(newTrunk);
     
 
     newTrunk.save((err,trunk)=>{
@@ -958,16 +959,6 @@ router.post("/api/charge", (req, res) => {
                 }
             })
                             //alert('Mail Verified Successfully');
-                            const from = 'Nexmo'
-                            const to = '918147806874'
-                            const text = 'Hello from Nexmo ...User amount'+amount+'id'+id;
-                             nexmo.message.sendSms(from, to, text,(err, responseData) => {
-                                if (err) {
-                                  console.log(err);
-                                } else {
-                                  console.log(responseData);
-                                }
-                              })
                             res.json({msg:charge,status:200});
                         });
                 }
