@@ -7,6 +7,7 @@ const Trunk = require('./models/trunk');
 const Extension1 = require('./models/extension');
 const Inbound = require('./models/inbound');
 const Outbound = require('./models/outbound');
+const Transaction = require('./models/transaction');
 const Ring = require('./models/ring');
 const mongoose = require('mongoose');
 const Wav = require('./models/wav');
@@ -404,33 +405,33 @@ router.get('/api/trunks',verify.common,(req,res,next)=>{
 
     Trunk.find({userid: req.headers['user']},function(err,trunks){
         
-//         var xml1 = builder.create('include');
+        var xml1 = builder.create('include');
 
-//         for(var i=0; i<trunks.length; i++)
-//         {
-//             if(trunks[i].register==true)
-//             {
-//          xml1.ele('gateway',{'name':trunks[i].trunkname})
-//         .ele('param',{'name':'proxy','value':trunks[i].trunkip}).up()
-//         .ele('param',{'name':'register','value':trunks[i].register}).up()
-//         .ele('param',{'name':'username','value':trunks[i].username1}).up()
-//         .ele('param',{'name':'password','value':trunks[i].password}).up()
-//         .up();
-//             }
-//     else
-//     {
-//         xml1.ele('gateway',{'name':trunks[i].trunkname})
-//         .ele('param',{'name':'proxy','value':trunks[i].trunkip}).up()
-//         .ele('param',{'name':'register','value':trunks[i].register}).up()
-//         .ele('param',{'name':'caller-id-in-from','value':true}).up()
-//         .up();
+        for(var i=0; i<trunks.length; i++)
+        {
+            if(trunks[i].register==true)
+            {
+         xml1.ele('gateway',{'name':trunks[i].trunkname})
+        .ele('param',{'name':'proxy','value':trunks[i].trunkip}).up()
+        .ele('param',{'name':'register','value':trunks[i].register}).up()
+        .ele('param',{'name':'username','value':trunks[i].username1}).up()
+        .ele('param',{'name':'password','value':trunks[i].password}).up()
+        .up();
+            }
+    else
+    {
+        xml1.ele('gateway',{'name':trunks[i].trunkname})
+        .ele('param',{'name':'proxy','value':trunks[i].trunkip}).up()
+        .ele('param',{'name':'register','value':trunks[i].register}).up()
+        .ele('param',{'name':'caller-id-in-from','value':true}).up()
+        .up();
 
-//     }
-// }
-//         xml1.end({ pretty: true});
-//         fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
+    }
+}
+        xml1.end({ pretty: true});
+        fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
 
-//          });
+         });
          res.json(trunks);
         
         });
@@ -915,9 +916,10 @@ function(err,updatedcontact){
 router.post("/api/charge", (req, res) => {
         let index = req.body.index;
         var id = req.body.id;
-        let extension = req.body.extension; // 500 cents means $5 
-        if(index === 1) {
+        let extension = req.body.extension;
         let amount = req.body.amount;
+        // 500 cents means $5 
+        if(index === 1) {
          console.log(req.body.token);
         // create a customer 
         stripe.customers.create({
@@ -949,15 +951,26 @@ router.post("/api/charge", (req, res) => {
             console.log(a);
             a.save((err,lextension)=>{
                 if(err)
-                {
-                    //res.json({msg:'Failed to add extension limit'});
+                {    //res.json({msg:'Failed to add extension limit'});
                 }
-                else{
-                    
-                   //res.json({msg:'Limit added'});
-        
+                else{              
+                   //res.json({msg:'Limit added'})
                 }
-            })
+            });
+            var transactionData = new Transaction({
+                userid:id,
+                type:'Stripe',
+                amount:amount,
+                paymentId:charge.id,
+                status:'paid'
+            });
+            transactionData.save((err,transaction)=>{
+                if(err) {
+
+                } else {
+
+                }
+            });
                             //alert('Mail Verified Successfully');
                             res.json({msg:charge,status:200});
                         });
@@ -966,6 +979,7 @@ router.post("/api/charge", (req, res) => {
         })
  // render the charge view: views/charge.pug
     } else if(index === 2) {
+        var pid = req.body.paymentId;
             User.findByIdAndUpdate(id,{$set:{paid:true}},{new:true}, (err, todo) => {
                 // Handle any possible database errors
                     if (err) {
@@ -989,6 +1003,20 @@ router.post("/api/charge", (req, res) => {
 
         }
     })
+    var transactionData = new Transaction({
+        userid:id,
+        type:'Paypal',
+        amount:amount,
+        paymentId:pid,
+        status:'paid'
+    });
+    transactionData.save((err,transaction)=>{
+        if(err) {
+
+        } else {
+
+        }
+    });
                     //alert('Mail Verified Successfully');
                     res.json({msg:'paid',status:200});
                 });

@@ -59,7 +59,9 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
         var a = {
           id:this.id,
           extension:this.extension,
-          index:2
+          index:2,
+          amount:this.plan,
+          paymentId:data.paymentID
         };
         this.payment.stripecharge(a).subscribe(data=>{
           console.log(data);
@@ -105,6 +107,7 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.card.removeEventListener('change', this.cardHandler);
     this.card.destroy();
+
   }
 
   onChange({ error }) {
@@ -130,7 +133,7 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
         id:this.id,
         amount:this.plan,
         extension:this.extension,
-        index:1
+        index:1,
       }
       this.payment.stripecharge(a).subscribe(data=>{
         console.log(data);

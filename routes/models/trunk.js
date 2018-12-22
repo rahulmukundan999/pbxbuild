@@ -9,19 +9,24 @@ const TrunkSchema = mongoose.Schema({
     },
     trunkname:{
         type: String,
-        required: true
+        required: true,
+        default:''
     },
     username1:{
-        type: String
+        type: String,
+        default:''
     },
     password:{
-        type: String
+        type: String,
+        default:''
     },
     trunkip:{
-        type: String
+        type: String,
+        default:''
     },
     register:{
-        type: Boolean
+        type: Boolean,
+        default:''
     },
 });
 
