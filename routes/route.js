@@ -980,7 +980,7 @@ router.post("/api/charge", (req, res) => {
                             //alert('Mail Verified Successfully');
                             invoice.sendInvoice({
                             amount:amount,
-                            paymentId:paymentId,
+                            paymentId:charge.id,
                             type:'Credit/Debit card',
                             email:email
                         });
