@@ -427,9 +427,12 @@ router.get('/api/trunks',verify.common,(req,res,next)=>{
     }
 }
         xml1.end({ pretty: true});
-        fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
+        // fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
 
-         });
+        //  });
+        fs.writeFile("./trunk/gateway.xml",xml1,function(err){
+
+        });
          res.json(trunks);
         
         });
