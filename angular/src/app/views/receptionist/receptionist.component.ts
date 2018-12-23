@@ -3,6 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort,MatTableDataSource} f
 import { ReceptionistService } from './receptionist.service';
 import {Receptionist}  from './receptionist';
 import { Image }  from './image';
+import { AuthService } from '../login/auth.service';
+
 
 @Component({
   selector: 'app-receptionist',
@@ -177,9 +179,10 @@ export class WavDialog implements OnInit {
 
 
   constructor( public dialogRef: MatDialogRef<WavDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData1,private receptionistService: ReceptionistService) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData1,private receptionistService: ReceptionistService,
+     private auth: AuthService) {}
     
-
+     id: any;
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -193,8 +196,14 @@ export class WavDialog implements OnInit {
   uploadWav()
   {
 console.log(this.filemain);
-this.receptionistService.addWav(this.filemain)
-.subscribe();
+this.receptionistService.addWav(this.filemain,this.id)
+.subscribe(data=>{
+  if(data.status === 200) {
+    alert('Uploaded Successfully');
+  } else {
+    alert('Technical Error');
+  }
+});
 this.dialogRef.close();
 
 }
@@ -202,8 +211,7 @@ this.dialogRef.close();
 
 
   ngOnInit() {
-
-
+    this.id = this.auth.getId();
     this.receptionistService.getWavs()
     .subscribe(images => this.images = images);
 

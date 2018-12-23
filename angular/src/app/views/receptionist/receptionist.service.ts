@@ -11,10 +11,12 @@ export class ReceptionistService {
 
   constructor(private http: Http) { }
   fd = new FormData();
-  addWav(file)
+  addWav(file,id)
   {
+    console.log('filefile',file);
+    this.fd.append('id',id);
     this.fd.append('file', file, file.name);
-console.log(this.fd);
+    console.log(this.fd);
     return this.http.post('/api/addWav',this.fd).pipe(
     map(res => res.json()));
   }

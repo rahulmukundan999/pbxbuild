@@ -38,16 +38,6 @@ paypal.configure({
   });
 
 
-var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'routes/')
-    },
-    filename: (req, file, cb) => { 
-      cb(null,file.originalname + Date.now() );
-    }
-});
-const upload = multer({storage:storage});
-
 
 module.exports = function(router, passport) {  
 
@@ -500,20 +490,51 @@ router.post('/api/receptionist',(req,res,next)=>{
 
 
 //add wav
-router.post('/api/addWav',upload.single('file'),(req,res,next)=>{
+router.post('/api/addWav',(req,res,next)=>{
+    var storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            console.log('fiels',req.body.id);
+            fs.mkdir('./file/'+req.body.id,function(err) {
+                if(!err) {
+                } else {
+                    console.log(err);
+                }
+            });
+            cb(null, './file/'+req.body.id+'/')
+        },
+        filename: (req, file, cb) => { 
+          cb(null,file.originalname);
+        }
+    });
+    const upload = multer({storage:storage}).any();
+    upload(req,res,function(err) {
+        if(err) {
+            console.log(err);
+            return res.end("Error uploading file.");
+        } else {
+           console.log(req.body);
+           req.files.forEach( function(f) {
+             console.log(f);
+             // and move file to final destination...
+           });
+           res.json({status:200,msg:'File Uploaded Successfully'});
+        }
+    });
 
-if(req.file)
-{
-    console.log(req.file);
-    req.body.photo=req.file.filename;
-}
+// if(req.file)
+// {
+//     console.log(req.file);
+//     console.log(req.body.id);
+//     req.body.photo=req.file.filename;
+  
+// }
 /*
 var newItem = new Wav();
 newItem.img.data = fs.readFileSync(req.file.path)
 newItem.img.contentType = 'image/jpg';
 newItem.save();
 */
-res.json('File Uploaded')
+// res.json('File Uploaded')
    
 });
 
