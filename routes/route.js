@@ -22,15 +22,13 @@ var verify = new a();
 var b = require('./verify/mail.js');
 const paypal = require('paypal-rest-sdk');
 var mail = new b();
+var c = require('./message/mailSend.js');
+var invoice = new c();
 //const keyPublishable = process.env.PUBLISHABLE_KEY;
 //const keySecret = process.env.SECRET_KEY;
 const stripe = require("stripe")('sk_test_mjlCuBBzkf4cfBU3arpajjDU');
 //console.log(b.check());
-const Nexmo = require('nexmo')
-const nexmo = new Nexmo({
-  apiKey: '9e2dcd11',
-  apiSecret: 'QTVnbRjiL3kc7g9z'
-})
+
 
 
 paypal.configure({
@@ -918,6 +916,14 @@ router.post("/api/charge", (req, res) => {
         var id = req.body.id;
         let extension = req.body.extension;
         let amount = req.body.amount;
+        var email;
+        User.find({_id: id},function(err,user){
+            if(err) {
+
+            } else {
+                email = user.email
+            }
+        });
         // 500 cents means $5 
         if(index === 1) {
          console.log(req.body.token);
@@ -972,6 +978,12 @@ router.post("/api/charge", (req, res) => {
                 }
             });
                             //alert('Mail Verified Successfully');
+                            invoice.sendInvoice({
+                            amount:amount,
+                            paymentId:paymentId,
+                            type:'Credit/Debit card',
+                            email:email
+                        });
                             res.json({msg:charge,status:200});
                         });
                 }
@@ -1018,6 +1030,12 @@ router.post("/api/charge", (req, res) => {
         }
     });
                     //alert('Mail Verified Successfully');
+                    invoice.sendInvoice({
+                        amount:amount,
+                        paymentId:pid,
+                        type:'Paypal',
+                        email:email
+                    });
                     res.json({msg:'paid',status:200});
                 });
         }

@@ -1,8 +1,7 @@
 const nodemailer = require('nodemailer');
-const jwt = require('jsonwebtoken');
 console.log('fwefwe');
 class mail {
-    check(user) {
+    sendInvoice(user) {
         console.log(user);
    nodemailer.createTestAccount((err, account) => {
     // create reusable transporter object using the default SMTP transport
@@ -14,14 +13,14 @@ class mail {
             pass: 'rahul1234' // generated ethereal password
         }
     });
-    const url = 'http://localhost:3000/api/confirmation/'+user._id+'/check';
     // setup email data with unicode symbols
     let mailOptions = {
         from: 'Hirepbx', // sender address
         to: user.email, // list of receivers
-        subject: 'Hello '+user.username, // Subject line
+        subject: 'Payment Successfully ', // Subject line
         text: 'Welcome to Hirepbx', // plain text body
-        html: '<b>Hello '+ user.username+'</b><br><p> Thanks for showing interest in us</p><br><p>Please click the button to verify the mail<br><a href='+url+'><input type="button" value="Click Me"</a></p>'
+        html:'<h1 align="center">Payment Successfull </h1> <br>Payment has Been Successful <br> Payment Id: '+ 
+        user.paymentId+'<br> Payment Amount :'+user.amount+'<br> Payment Type: '+user.type
         // html body
     };
 
