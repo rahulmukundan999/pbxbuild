@@ -26,7 +26,7 @@ const TrunkSchema = mongoose.Schema({
     },
     register:{
         type: Boolean,
-        default:''
+        default:false
     },
 });
 
