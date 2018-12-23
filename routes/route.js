@@ -917,13 +917,14 @@ router.post("/api/charge", (req, res) => {
         let extension = req.body.extension;
         let amount = req.body.amount;
         var email;
-        User.find({_id: id},function(err,user){
+        User.findOne({_id: id},function(err,user){
             if(err) {
 
             } else {
-                email = user.email
+                email = user.email;
             }
         });
+        console.log(email);
         // 500 cents means $5 
         if(index === 1) {
          console.log(req.body.token);
