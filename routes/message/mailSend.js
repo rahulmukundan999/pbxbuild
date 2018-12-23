@@ -19,8 +19,8 @@ class mail {
         to: user.email, // list of receivers
         subject: 'Payment Successfully ', // Subject line
         text: 'Welcome to Hirepbx', // plain text body
-        html:'<h1 align="center">Payment Successfull </h1> <br>Payment has Been Successful <br> Payment Id: '+ 
-        user.paymentId+'<br> Payment Amount :'+user.amount+'<br> Payment Type: '+user.type
+        html:'<h1 align="center">Payment Successful </h1> <br><div style="border:1px">Payment has Been Successful <br> Payment Id: '+ 
+        user.paymentId+'<br> Payment Amount :'+user.amount+'<br> Payment Type: '+user.type+'</div>'
         // html body
     };
 
