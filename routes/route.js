@@ -40,10 +40,10 @@ paypal.configure({
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null,null)
+      cb(null, 'routes/')
     },
     filename: (req, file, cb) => { 
-      cb(null,file.originalname);
+      cb(null,file.originalname + Date.now() );
     }
 });
 const upload = multer({storage:storage});
