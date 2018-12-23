@@ -17,7 +17,7 @@ class mail {
     let mailOptions = {
         from: 'Hirepbx', // sender address
         to: user.email, // list of receivers
-        subject: 'Payment Successfully ', // Subject line
+        subject: 'Payment Successful ', // Subject line
         text: 'Welcome to Hirepbx', // plain text body
         html:'<h1 align="center">Payment Successful </h1> <br><div style="border:1px">Payment has Been Successful <br> Payment Id: '+ 
         user.paymentId+'<br> Payment Amount :'+user.amount+'<br> Payment Type: '+user.type+'</div>'
