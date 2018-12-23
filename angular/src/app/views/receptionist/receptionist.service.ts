@@ -13,8 +13,6 @@ export class ReceptionistService {
   fd = new FormData();
   addWav(file)
   {
-    
-    
     this.fd.append('file', file, file.name);
 console.log(this.fd);
     return this.http.post('/api/addWav',this.fd).pipe(
