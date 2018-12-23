@@ -174,7 +174,7 @@ export class WavDialog implements OnInit {
  fd = new FormData();
  images:Image[];
  image:Image;
-
+ dis = false;
 
 
 
@@ -195,17 +195,19 @@ export class WavDialog implements OnInit {
   }
   uploadWav()
   {
+    this.dis = true;
 console.log(this.filemain);
 this.receptionistService.addWav(this.filemain,this.id)
 .subscribe(data=>{
+  this.dis = false;
   if(data.status === 200) {
     alert('Uploaded Successfully');
+    this.dialogRef.close();
   } else {
     alert('Technical Error');
+    this.dialogRef.close();
   }
 });
-this.dialogRef.close();
-
 }
 
 

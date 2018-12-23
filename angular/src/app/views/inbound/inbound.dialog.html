@@ -8,10 +8,14 @@
             <mat-error ng-show="myForm.extension.$touched && myForm.extension.$invalid">Required</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [(ngModel)]="playback"  placeholder="PlayBack" name="playback">
+            <mat-select [(ngModel)]="playback" name="playback" placeholder="Playback">
+                <mat-option *ngFor="let wav of wavfile" [value]="wav.fileName"> {{wav.fileName}}</mat-option>
+                  </mat-select>
         </mat-form-field>
         <mat-form-field>
-             <input matInput [(ngModel)]="ringgroup"  placeholder="Ring Group" (ngModelChange)="textAreaEmpty()" name="ringgroup" [disabled]="disable">
+                <mat-select [(ngModel)]="ringgroup" name="ringgroup" placeholder="RingGroup">
+                        <mat-option *ngFor="let ring of rings" [value]="ring.name"> {{ring.name}}</mat-option>
+                          </mat-select>
          </mat-form-field>
          <mat-form-field>
              <mat-select [(ngModel)]="forext" name="forext" placeholder="Extension">

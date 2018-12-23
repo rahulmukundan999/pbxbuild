@@ -198,8 +198,10 @@ Contact.find({userid: req.headers['user']},function(err,contacts){
 
 //retrive wAVS
 router.get('/api/wavs',(req,res,next)=>{
-    Wav.find(function(err,wavs){
-        res.json(wavs);
+    console.log(req.headers['userid']);
+    Wav.find({userid:req.headers['userid']},function(err,wavs){
+        console.log('wav file',wavs);
+        res.json({status:200,data:wavs});
     }) 
     });
 
@@ -446,6 +448,31 @@ router.get('/api/inbounds',verify.common,(req,res,next)=>{
         } else {
 
     Inbound.find({userid: req.headers['user']},function(err,inbounds){
+        var xml1 = builder.create('include');
+
+        for(var i=0; i<inbounds.length; i++)
+        {
+         var a = xml1.ele('extension',{'name':inbounds[i].name})
+        var b = a.ele('condition',{'field':'context','expression':'public'}).up()
+        var c = b.ele('condition',{'field':'destination_number','expression':'^('+inbounds[i].didnumber+')$'}).up()
+        var d = c.ele('action',{'application':'answer'}).up();
+        if(inbounds[i].didnumber) {
+            d.ele('action',{'application':'playback',data:'/usr/local/freeswitch/recordings/'+inbounds[i].playback}).up();
+        }
+        d.ele('action',{'application':'transfer',data:inbounds[i].forext+' XML Default'}).up();
+        if(inbounds[i].ringgroup) {
+            d.ele('action',{'application':'transfer',data:inbounds[i].ringgroup+' XML Default'}).up();
+        } if(inbounds[i].formob) {
+            d.ele('action',{'application':'transfer',data:inbounds[i].formob+' XML Default'}).up();
+        }
+}
+        xml1.end({ pretty: true});
+        // fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
+
+        //  });
+        fs.writeFile("trunk.xml",xml1,function(err){
+
+        });
         res.json(inbounds);
     });
 }
@@ -491,6 +518,7 @@ router.post('/api/receptionist',(req,res,next)=>{
 
 //add wav
 router.post('/api/addWav',(req,res,next)=>{
+    var filename;
     var storage = multer.diskStorage({
         destination: (req, file, cb) => {
             console.log('fiels',req.body.id);
@@ -502,7 +530,8 @@ router.post('/api/addWav',(req,res,next)=>{
             });
             cb(null, './file/'+req.body.id+'/')
         },
-        filename: (req, file, cb) => { 
+        filename: (req, file, cb) => {
+          filename = file.originalname; 
           cb(null,file.originalname);
         }
     });
@@ -516,6 +545,17 @@ router.post('/api/addWav',(req,res,next)=>{
            req.files.forEach( function(f) {
              console.log(f);
              // and move file to final destination...
+           });
+           var a = new Wav({
+               userid:req.body.id,
+               fileName:filename
+           });
+           a.save((err,wav)=>{
+               if(err) {
+                   console.log(err);
+               } else {
+                   console.log('hello saved');
+               }
            });
            res.json({status:200,msg:'File Uploaded Successfully'});
         }

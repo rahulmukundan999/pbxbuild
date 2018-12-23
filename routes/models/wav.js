@@ -7,6 +7,10 @@ const WavSchema = mongoose.Schema({
         type:String,
         required:true
     },
+    userid: {
+        type:String,
+        required:true
+    }
 });
 
 const Wav = module.exports = mongoose.model('Wav',WavSchema);

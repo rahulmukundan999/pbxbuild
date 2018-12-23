@@ -14,7 +14,17 @@ export class InboundService {
   constructor(private http: Http,private auth:AuthService) { }
 
 //retrieve
-
+getRings(userid)
+{
+  var headers = new Headers();
+  headers.append('authorization','Bearer'+' '+this.auth.getTokenid());
+  console.log(userid);
+  var user = userid;
+  console.log(typeof(user));
+  headers.append('user',user);
+  return this.http.get('/api/rings',{headers:headers}).pipe(
+  map(res => res.json()));
+}
 getInbounds(userid)
 {
   var headers = new Headers();
@@ -24,6 +34,17 @@ getInbounds(userid)
   console.log(typeof(user));
   headers.append('user',user);
   return this.http.get('/api/inbounds',{headers:headers}).pipe(
+  map(res => res.json()));
+}
+getWav(userid)
+{
+  var headers = new Headers();
+  headers.append('authorization','Bearer'+' '+this.auth.getTokenid());
+  console.log(userid);
+  var user = userid;
+  console.log(typeof(user));
+  headers.append('userid',userid);
+  return this.http.get('/api/wavs',{headers:headers}).pipe(
   map(res => res.json()));
 }
 getExtensions(userid)

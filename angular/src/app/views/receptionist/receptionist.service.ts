@@ -3,13 +3,15 @@ import { Http, Headers,HttpModule} from '@angular/http';
 //import { Wav } from './receptionist';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import {AuthService} from '../login/auth.service';
+
 
 @Injectable()
 
 
 export class ReceptionistService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,private auth:AuthService) { }
   fd = new FormData();
   addWav(file,id)
   {

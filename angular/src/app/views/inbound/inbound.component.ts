@@ -77,10 +77,12 @@ export interface DialogData {
     })
     export class InboundDialog implements OnInit {
 
-extensions:Extension[];
-extension:Extension;
+      extensions:Extension[];
+      extension:Extension;
       inbounds:Inbound[];
       inbound: Inbound;
+      wavfile: any;
+      rings: any;
       name: string;
       didnumber: string;
       playback: string;
@@ -93,11 +95,11 @@ extension:Extension;
       userid: string;
       textAreaEmpty()
       {
-if(this.ringgroup!='')
-{
+     if(this.ringgroup!='')
+     {
           this.disable1=true;
           this.disable2=true;
-}
+      }
 else if(this.ringgroup=='')
 {
           this.disable1=false;
@@ -178,14 +180,18 @@ if(this.formob!='')
 
     
 ngOnInit() {
-this.userid = this.auth.getId();
+  this.userid = this.auth.getId();
   this.inboundService.getInbounds(this.userid)
   .subscribe(inbounds => this.inbounds = inbounds);
   this.inboundService.getExtensions(this.userid)
   .subscribe(extensions => this.extensions = extensions);
-
-
-
+  this.inboundService.getWav(this.userid).subscribe(data=>{
+    this.wavfile = data.data;
+    console.log(this.wavfile);
+  });
+  this.inboundService.getRings(this.userid).subscribe(data=>{
+    console.log(data);
+    this.rings = data;
+  });
     }
-
-    }
+     }
