@@ -14,7 +14,7 @@ var cookieParser = require('cookie-parser');
 
 var app = express();
 
-mongoose.connect('mongodb://mongo:27017/contactlist1');
+mongoose.connect('mongodb://10.1.1.224:27017/contactlist1');
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
