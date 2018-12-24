@@ -456,13 +456,13 @@ router.get('/api/inbounds',verify.common,(req,res,next)=>{
         var b = a.ele('condition',{'field':'context','expression':'public'}).up()
         var c = b.ele('condition',{'field':'destination_number','expression':'^('+inbounds[i].didnumber+')$'}).up()
         var d = c.ele('action',{'application':'answer'}).up();
-        if(inbounds[i].didnumber) {
+        if(inbounds[i].didnumber && inbounds[i].didnumber!=undefined) {
             d.ele('action',{'application':'playback',data:'/usr/local/freeswitch/recordings/'+inbounds[i].playback}).up();
         }
         d.ele('action',{'application':'transfer',data:inbounds[i].forext+' XML Default'}).up();
-        if(inbounds[i].ringgroup) {
+        if(inbounds[i].ringgroup && inbounds[i].ringgroup!=undefined) {
             d.ele('action',{'application':'transfer',data:inbounds[i].ringgroup+' XML Default'}).up();
-        } if(inbounds[i].formob) {
+        } if(inbounds[i].formob && inbounds[i].formob!=undefined) {
             d.ele('action',{'application':'transfer',data:inbounds[i].formob+' XML Default'}).up();
         }
 }
