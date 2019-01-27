@@ -333,7 +333,7 @@ if(err) {
       console.log(extensions);
         for(var i=0; i<extensions.length; i++){
             
-            var a=extensions[i].extensionno+'.xml';
+            var a='/etc/freeswitch/directory/default/'+extensions[i].extensionno+'.xml';
             
        var b=i;
             fs.exists(a,function (exists) {
@@ -421,12 +421,12 @@ router.get('/api/trunks',verify.common,(req,res,next)=>{
     }
 }
         xml1.end({ pretty: true});
-        // fs.writeFile("/usr/local/freeswitch/conf/sip_profiles/external/gateway.xml",xml1,function(err){
+        fs.writeFile("/etc/freeswitch/sip_profiles/external/gateway.xml",xml1,function(err){
 
-        //  });
-        fs.writeFile("./trunk/gateway.xml",xml1,function(err){
+         });
+        // fs.writeFile("./trunk/gateway.xml",xml1,function(err){
 
-        });
+        // });
          res.json(trunks);
         
         });
