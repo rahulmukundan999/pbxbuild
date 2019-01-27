@@ -1,6 +1,6 @@
 <form #myForm="ngForm" >
         <h2 mat-dialog-title>Upload Wav File</h2>
         <input id="file-field" name="file" (change)="uploadFile($event)" type="file">
-        <button mat-raised-button (click)="uploadWav()" *ngIf="!dis">Upload Wav</button>
+        <button mat-raised-button (click)="uploadWav()" *ngIf="!dis" [disabled]="!filemain">Upload Wav</button>
         <mat-spinner [diameter]="25" *ngIf="dis"></mat-spinner>
         </form>

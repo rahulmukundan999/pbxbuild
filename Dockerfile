@@ -2,7 +2,6 @@ FROM node:8
 
 WORKDIR /home/test/rahul/hire/pbxbuild
 
-
 COPY package*.json ./
 
 RUN npm install
@@ -10,6 +9,6 @@ RUN npm install
 copy . .
 
 EXPOSE 3000
-EXPOSE 27017
-CMD [ "node", "app.js" ]
 
+
+CMD [ "node", "app.js" ]

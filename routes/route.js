@@ -249,7 +249,9 @@ router.get('/api/rings',verify.common,(req,res,next)=>{
     }); 
     });
     
-
+router.get('/test',(req,res,next)=>{
+res.json({status:200,msg:"hello"});
+});
 
 
 //retrive outbound
@@ -1008,6 +1010,7 @@ router.post("/api/charge", (req, res) => {
                 if(err) {
                     res.json({msg:err,status:400});
                 } else {
+                    console.log(charge);
                     User.findByIdAndUpdate(id,{$set:{paid:true}},{new:true}, (err, todo) => {
                         // Handle any possible database errors
                             if (err) {
@@ -1033,7 +1036,9 @@ router.post("/api/charge", (req, res) => {
                 type:'Stripe',
                 amount:amount,
                 paymentId:charge.id,
-                status:'paid'
+                status:'paid',
+                created: charge.created,
+                localDate:Math.floor(Date.now() / 1000)
             });
             transactionData.save((err,transaction)=>{
                 if(err) {
@@ -1085,7 +1090,9 @@ router.post("/api/charge", (req, res) => {
         type:'Paypal',
         amount:amount,
         paymentId:pid,
-        status:'paid'
+        status:'paid',
+        created: Math.floor(Date.now() / 1000),
+        localDate: Math.floor(Date.now() / 1000)
     });
     transactionData.save((err,transaction)=>{
         if(err) {

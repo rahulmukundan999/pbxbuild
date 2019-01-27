@@ -22,6 +22,14 @@ const TransactionSchema = mongoose.Schema({
         type: String,
         default:''
     },
+    created: {
+        type:String,
+        required:true
+    },
+    localDate: {
+        type:String,
+        required:true
+    }
 });
 
 const Transaction = module.exports = mongoose.model('Transaction',TransactionSchema);

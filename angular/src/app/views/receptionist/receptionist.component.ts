@@ -15,8 +15,11 @@ import { AuthService } from '../login/auth.service';
 export class ReceptionistComponent implements OnInit {
 
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private rservice: ReceptionistService) { }
   ngOnInit() {
+    this.rservice.getReceptionists().subscribe(data=>{
+      console.log(data);
+    });
    
   }
   openDialog(): void {
