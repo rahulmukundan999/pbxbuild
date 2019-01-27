@@ -333,7 +333,7 @@ if(err) {
       console.log(extensions);
         for(var i=0; i<extensions.length; i++){
             
-            var a='/etc/freeswitch/directory/default/'+extensions[i].extensionno+'.xml';
+            var a = '/etc/freeswitch/directory/default/'+extensions[i].extensionno+'.xml';
             
        var b=i;
             fs.exists(a,function (exists) {
@@ -808,7 +808,7 @@ router.post('/api/inbound',(req,res,next)=>{
 router.delete('/api/extension/:id/:extensionno',(req,res,next)=>{
     ext=req.params.id;
     name=req.params.extensionno;
-    fs.unlink('/usr/local/freeswitch/conf/directory/default/'+name+'.xml', function (err) {
+    fs.unlink('/etc/freeswitch/directory/default/'+name+'.xml', function (err) {
         
       });
     Extension.remove({_id: req.params.id}, function(err, result){
