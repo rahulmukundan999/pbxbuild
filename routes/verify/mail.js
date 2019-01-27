@@ -14,7 +14,7 @@ class mail {
             pass: 'rahul1234' // generated ethereal password
         }
     });
-    const url = 'http://18.222.178.136:3000/api/confirmation/'+user._id+'/check';
+    const url = 'http://3.83.29.133:3000/api/confirmation/'+user._id+'/check';
     // setup email data with unicode symbols
     let mailOptions = {
         from: 'Hirepbx', // sender address
