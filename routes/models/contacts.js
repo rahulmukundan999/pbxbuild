@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const ContactSchema = mongoose.Schema({
     userid:{
         type: String,
-        required: true
+        // required: true
     },
     firstname:{
         type: String,
@@ -16,7 +16,7 @@ const ContactSchema = mongoose.Schema({
     },
     company:{
         type: String,
-        required: true
+        // required: true
     },
     mob:{
         type: String

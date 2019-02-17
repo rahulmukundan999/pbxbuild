@@ -11,11 +11,10 @@ var cookieParser = require('cookie-parser');
 
 //console.log(process.argv[2]);
 
-
 var app = express();
-// 172.31.92.172
-mongoose.connect('mongodb://172.31.92.172:27017/contactlist1');
+
 // mongoose.connect('mongodb://localhost:27017/contactlist1');
+mongoose.connect('mongodb://rahul:rahul1234@ds043987.mlab.com:43987/contactlist1');
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -24,7 +23,7 @@ app.use(cookieParser('foo'));
 //app.use(cors());
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(bodyparser.json());
